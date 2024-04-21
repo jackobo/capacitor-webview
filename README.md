@@ -14,7 +14,7 @@ npx cap sync
 <docgen-index>
 
 * [`openWebView(...)`](#openwebview)
-* [`closeWebview()`](#closewebview)
+* [`closeWebView()`](#closewebview)
 * [`reload()`](#reload)
 * [`navigateTo(...)`](#navigateto)
 * [`addListener('urlChangedEvent', ...)`](#addlistenerurlchangedevent-)
@@ -41,10 +41,10 @@ openWebView(options: IOpenWebviewOptions) => Promise<void>
 --------------------
 
 
-### closeWebview()
+### closeWebView()
 
 ```typescript
-closeWebview() => Promise<void>
+closeWebView() => Promise<void>
 ```
 
 --------------------

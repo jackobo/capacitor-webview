@@ -95,7 +95,7 @@ export type WebViewClosedEventHandler = (state: WebviewClosedEvent) => void;
 
 export interface CapacitorWebviewPlugin {
   openWebView(options: IOpenWebviewOptions): Promise<void>;
-  closeWebview(): Promise<void>;
+  closeWebView(): Promise<void>;
   reload(): Promise<void>;
   navigateTo(options: {url: string}): Promise<void>;
   addListener(eventName: 'urlChangedEvent', handler: UrlChangeEventHandler): Promise<PluginListenerHandle>;

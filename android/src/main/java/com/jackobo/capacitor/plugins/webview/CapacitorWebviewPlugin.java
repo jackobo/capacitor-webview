@@ -12,7 +12,7 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 public class CapacitorWebviewPlugin extends Plugin {
 
 
-    private IWebViewEvents _eventsCallbacks = new IWebViewEvents() {
+    private final IWebViewEvents _eventsCallbacks = new IWebViewEvents() {
 
         @Override
         public void onUrlChanged(String url) {
@@ -28,10 +28,15 @@ public class CapacitorWebviewPlugin extends Plugin {
 
     @PluginMethod
     public void openWebView(PluginCall call) {
-        OpenWebViewOptions options = new OpenWebViewOptions(call, _eventsCallbacks);
-        WebViewActivity.WebViewOptions = options;
+        WebViewActivity.WebViewOptions = new OpenWebViewOptions(call, _eventsCallbacks);
         Intent intent = new Intent(this.getContext(), WebViewActivity.class);
         getContext().startActivity(intent);
+    }
+
+    @PluginMethod
+    public void closeWebView(PluginCall call) {
+        Intent intent = new Intent(WebViewActivity.CLOSE_WEB_VIEW_INTENT);
+        getContext().sendBroadcast(intent);
     }
 
 }

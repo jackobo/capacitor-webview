@@ -1,6 +1,10 @@
 package com.jackobo.capacitor.plugins.webview;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -28,10 +32,19 @@ import android.webkit.WebViewClient;
 
 public class WebViewActivity extends AppCompatActivity {
 
-
-
     public static OpenWebViewOptions WebViewOptions;
-    private boolean _initialPageLoadOccured = false;
+    public static final String CLOSE_WEB_VIEW_INTENT = "CLOSE_WEB_VEW_ACTIVITY";
+    private boolean _initialPageLoadOccurred = false;
+
+    private final BroadcastReceiver _broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            var action = intent.getAction();
+            if(action != null && action.equals(CLOSE_WEB_VIEW_INTENT)) {
+                finish();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +68,7 @@ public class WebViewActivity extends AppCompatActivity {
         setupActionBar(WebViewOptions.getToolbarOptions());
 
 
-        WebView webView = setupWebView(WebViewOptions);;
+        WebView webView = setupWebView(WebViewOptions);
 
 
         webView.loadUrl(WebViewOptions.getUrl());
@@ -63,6 +76,18 @@ public class WebViewActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        var intentFilter = new IntentFilter(CLOSE_WEB_VIEW_INTENT);
+        registerReceiver(_broadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(_broadcastReceiver);
+    }
 
     @Override
     protected void onDestroy() {
@@ -121,8 +146,8 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if(!_initialPageLoadOccured) {
-                    _initialPageLoadOccured = true;
+                if(!_initialPageLoadOccurred) {
+                    _initialPageLoadOccurred = true;
                     webView.clearHistory();
                     options.resolvePluginCall();
                 }
