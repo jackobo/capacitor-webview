@@ -61,6 +61,11 @@ public class WebViewActivity extends AppCompatActivity {
         webView.loadUrl(WebViewOptions.getUrl());
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 
     private void setupActionBar(@Nullable WebViewToolbarOptions options) {
         var actionBar = getSupportActionBar();
