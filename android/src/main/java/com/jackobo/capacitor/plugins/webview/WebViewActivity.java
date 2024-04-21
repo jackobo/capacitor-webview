@@ -8,13 +8,17 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.text.Html;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -47,34 +51,49 @@ public class WebViewActivity extends AppCompatActivity {
             return insets;
         });
 
-        //setTitle("Aeroitalia");
+
+        setupActionBar(WebViewOptions.getToolbarOptions());
 
 
-        var actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        WebView webView = setupWebView(WebViewOptions);;
 
-            //actionBar.hide();
-            var backgroundColor = Color.parseColor("#FFFFFF");
-            var textColor = Color.parseColor("#000000");
-            actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
-            actionBar.setTitle(Html.fromHtml("<font color='#000000'>Aeroitalia</font>"));
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setDisplayShowHomeEnabled(true);
-        }
-
-
-
-        WebView webView = findViewById(R.id.pluginWebView);
-        setupWebView(webView);
 
         webView.loadUrl(WebViewOptions.getUrl());
     }
 
 
+    private void setupActionBar(@Nullable WebViewToolbarOptions options) {
+        var actionBar = getSupportActionBar();
+        if(actionBar == null) {
+            return;
+        }
+
+        if(options == null) {
+            actionBar.hide();
+            return;
+        }
+
+        var backgroundColor = Color.parseColor(options.getBackgroundColor());
+        actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
+
+
+        var htmlTitle = String.format("<font color='%s'>%s</font>", options.getColor(), options.getTitle());
+        actionBar.setTitle(Html.fromHtml(htmlTitle));
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_webview_back_arrow);
+        if(drawable != null) {
+            drawable.setColorFilter(Color.parseColor(options.getColor()), PorterDuff.Mode.SRC_ATOP);
+            actionBar.setHomeAsUpIndicator(drawable);
+        }
+    }
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void setupWebView(WebView webView) {
+    private WebView setupWebView(OpenWebViewOptions options) {
+
+        WebView webView = findViewById(R.id.pluginWebView);
 
         var webViewSettings = webView.getSettings();
         webViewSettings.setJavaScriptEnabled(true);
@@ -96,5 +115,16 @@ public class WebViewActivity extends AppCompatActivity {
             }
         });
         webView.setWebChromeClient(new WebChromeClient());
+
+        return webView;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == android.R.id.home) {
+            getOnBackPressedDispatcher().onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

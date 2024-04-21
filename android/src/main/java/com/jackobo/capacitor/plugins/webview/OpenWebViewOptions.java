@@ -1,10 +1,12 @@
 package com.jackobo.capacitor.plugins.webview;
+import androidx.annotation.Nullable;
+
 import com.getcapacitor.PluginCall;
 
-import java.io.Serializable;
 
 
-public class OpenWebViewOptions implements Serializable {
+
+public class OpenWebViewOptions {
     OpenWebViewOptions(PluginCall call) {
         this._pluginCall = call;
     }
@@ -13,6 +15,16 @@ public class OpenWebViewOptions implements Serializable {
 
     public String getUrl() {
         return _pluginCall.getString("url");
+    }
+
+    @Nullable
+    public WebViewToolbarOptions getToolbarOptions() {
+        var jsOptions = _pluginCall.getObject("toolbar", null);
+        if(jsOptions == null) {
+            return null;
+        }
+
+        return new WebViewToolbarOptions(jsOptions);
     }
 
     /*

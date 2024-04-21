@@ -1,4 +1,23 @@
-import {PluginListenerHandle} from "@capacitor/core";
+import type {PluginListenerHandle} from "@capacitor/core";
+
+export interface IWebViewToolbarOptions {
+  /**
+   * The text to appear in the toolbar
+   * @since 0.0.1
+   */
+  title: string;
+  /**
+   * Background color of the toolbar in hex format
+   * @since 0.0.1
+   */
+  backgroundColor: string;
+
+  /**
+   * The color for the title and for the back arrow in hex format
+   * @since 0.0.1
+   */
+  color: string;
+}
 
 export interface IOpenWebviewOptions {
   /**
@@ -27,6 +46,11 @@ export interface IOpenWebviewOptions {
    */
   allowDebug?: boolean;
 
+  /**
+   * Specify toolbar options. If null or undefined the toolbar will not be shown
+   * @since 0.0.1
+   */
+  toolbar?: IWebViewToolbarOptions;
 
 }
 

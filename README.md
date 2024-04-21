@@ -118,12 +118,22 @@ removeAllListeners() => Promise<void>
 
 #### IOpenWebviewOptions
 
-| Prop                        | Type                                                            | Description                                                                            | Default            | Since |
-| --------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------ | ----- |
-| **`url`**                   | <code>string</code>                                             | URL to load in the Webview                                                             |                    | 0.0.1 |
-| **`headers`**               | <code><a href="#record">Record</a>&lt;string, string&gt;</code> | Headers to append to the request                                                       |                    | 0.0.1 |
-| **`showAfterPageIsLoaded`** | <code>boolean</code>                                            | showAfterPageIsLoaded: if true the webview will be shown only after the page is loaded | <code>true</code>  | 0.0.1 |
-| **`allowDebug`**            | <code>boolean</code>                                            | Whether to enable debug on the webview                                                 | <code>false</code> | 0.0.1 |
+| Prop                        | Type                                                                      | Description                                                                            | Default            | Since |
+| --------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------ | ----- |
+| **`url`**                   | <code>string</code>                                                       | URL to load in the Webview                                                             |                    | 0.0.1 |
+| **`headers`**               | <code><a href="#record">Record</a>&lt;string, string&gt;</code>           | Headers to append to the request                                                       |                    | 0.0.1 |
+| **`showAfterPageIsLoaded`** | <code>boolean</code>                                                      | showAfterPageIsLoaded: if true the webview will be shown only after the page is loaded | <code>true</code>  | 0.0.1 |
+| **`allowDebug`**            | <code>boolean</code>                                                      | Whether to enable debug on the webview                                                 | <code>false</code> | 0.0.1 |
+| **`toolbar`**               | <code><a href="#iwebviewtoolbaroptions">IWebViewToolbarOptions</a></code> | Specify toolbar options. If null or undefined the toolbar will not be shown            |                    | 0.0.1 |
+
+
+#### IWebViewToolbarOptions
+
+| Prop                  | Type                | Description                                                  | Since |
+| --------------------- | ------------------- | ------------------------------------------------------------ | ----- |
+| **`title`**           | <code>string</code> | The text to appear in the toolbar                            | 0.0.1 |
+| **`backgroundColor`** | <code>string</code> | Background color of the toolbar in hex format                | 0.0.1 |
+| **`color`**           | <code>string</code> | The color for the title and for the back arrow in hex format | 0.0.1 |
 
 
 #### PluginListenerHandle
