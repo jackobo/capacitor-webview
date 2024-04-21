@@ -53,10 +53,7 @@ public class WebViewActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_web_view);
 
-        Window window = getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setupWindow();
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.webViewActivity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -72,8 +69,6 @@ public class WebViewActivity extends AppCompatActivity {
 
 
         webView.loadUrl(WebViewOptions.getUrl());
-
-
     }
 
     @Override
@@ -94,6 +89,13 @@ public class WebViewActivity extends AppCompatActivity {
         WebView webView = findViewById(R.id.pluginWebView);
         WebViewOptions.getEvents().onWebViewClosed(webView.getUrl());
         super.onDestroy();
+    }
+
+    private void setupWindow() {
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     private void setupActionBar(@Nullable WebViewToolbarOptions options) {

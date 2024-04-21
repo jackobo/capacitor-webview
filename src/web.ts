@@ -10,7 +10,7 @@ export class CapacitorWebviewWeb extends WebPlugin implements CapacitorWebviewPl
   async openWebView(options: IOpenWebviewOptions): Promise<void> {
       this._logMethodCall('openWebview', options);
   }
-  async closeWebview(): Promise<void> {
+  async closeWebView(): Promise<void> {
     this._logMethodCall('closeWebview');
   }
   async reload(): Promise<void> {
