@@ -76,7 +76,7 @@ export interface WebviewClosedEvent {
   /**
    * Current URL in the Webview by the time it is closed
    */
-  currentUrl: string;
+  url: string;
 }
 
 /**

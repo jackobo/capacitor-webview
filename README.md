@@ -17,8 +17,8 @@ npx cap sync
 * [`closeWebview()`](#closewebview)
 * [`reload()`](#reload)
 * [`navigateTo(...)`](#navigateto)
-* [`addListener('urlChanged', ...)`](#addlistenerurlchanged-)
-* [`addListener('webviewClosed', ...)`](#addlistenerwebviewclosed-)
+* [`addListener('urlChangedEvent', ...)`](#addlistenerurlchangedevent-)
+* [`addListener('webViewClosedEvent', ...)`](#addlistenerwebviewclosedevent-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -72,15 +72,15 @@ navigateTo(options: { url: string; }) => Promise<void>
 --------------------
 
 
-### addListener('urlChanged', ...)
+### addListener('urlChangedEvent', ...)
 
 ```typescript
-addListener(eventName: 'urlChanged', handler: UrlChangeEventHandler) => Promise<PluginListenerHandle>
+addListener(eventName: 'urlChangedEvent', handler: UrlChangeEventHandler) => Promise<PluginListenerHandle>
 ```
 
 | Param           | Type                                                                    |
 | --------------- | ----------------------------------------------------------------------- |
-| **`eventName`** | <code>'urlChanged'</code>                                               |
+| **`eventName`** | <code>'urlChangedEvent'</code>                                          |
 | **`handler`**   | <code><a href="#urlchangeeventhandler">UrlChangeEventHandler</a></code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
@@ -88,16 +88,16 @@ addListener(eventName: 'urlChanged', handler: UrlChangeEventHandler) => Promise<
 --------------------
 
 
-### addListener('webviewClosed', ...)
+### addListener('webViewClosedEvent', ...)
 
 ```typescript
-addListener(eventName: 'webviewClosed', handler: WebviewClosedEventHandler) => Promise<PluginListenerHandle>
+addListener(eventName: 'webViewClosedEvent', handler: WebViewClosedEventHandler) => Promise<PluginListenerHandle>
 ```
 
 | Param           | Type                                                                            |
 | --------------- | ------------------------------------------------------------------------------- |
-| **`eventName`** | <code>'webviewClosed'</code>                                                    |
-| **`handler`**   | <code><a href="#webviewclosedeventhandler">WebviewClosedEventHandler</a></code> |
+| **`eventName`** | <code>'webViewClosedEvent'</code>                                               |
+| **`handler`**   | <code><a href="#webviewclosedeventhandler">WebViewClosedEventHandler</a></code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
@@ -147,18 +147,18 @@ removeAllListeners() => Promise<void>
 
 Emit when the url changes in the Webview
 
-| Prop      | Type                | Description                              | Since |
-| --------- | ------------------- | ---------------------------------------- | ----- |
-| **`url`** | <code>string</code> | Emit when the url changes in the Webview | 0.0.1 |
+| Prop      | Type                | Description                | Since |
+| --------- | ------------------- | -------------------------- | ----- |
+| **`url`** | <code>string</code> | The new URL in the WebView | 0.0.1 |
 
 
 #### WebviewClosedEvent
 
 Emit when the Webview is closed
 
-| Prop             | Type                | Description                                         |
-| ---------------- | ------------------- | --------------------------------------------------- |
-| **`currentUrl`** | <code>string</code> | Current URL in the Webview by the time it is closed |
+| Prop      | Type                | Description                                         |
+| --------- | ------------------- | --------------------------------------------------- |
+| **`url`** | <code>string</code> | Current URL in the Webview by the time it is closed |
 
 
 ### Type Aliases
@@ -178,7 +178,9 @@ Handler for urlChanged event
 <code>(state: <a href="#urlchangedevent">UrlChangedEvent</a>): void</code>
 
 
-#### WebviewClosedEventHandler
+#### WebViewClosedEventHandler
+
+Handler for webViewClosedEvent event
 
 <code>(state: <a href="#webviewclosedevent">WebviewClosedEvent</a>): void</code>
 
