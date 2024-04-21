@@ -1,8 +1,10 @@
 package com.jackobo.capacitor.plugins.webview;
 import com.getcapacitor.PluginCall;
 
+import java.io.Serializable;
 
-public class OpenWebViewOptions {
+
+public class OpenWebViewOptions implements Serializable {
     OpenWebViewOptions(PluginCall call) {
         this._pluginCall = call;
     }

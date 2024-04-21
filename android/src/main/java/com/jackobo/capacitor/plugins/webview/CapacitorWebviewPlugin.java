@@ -1,5 +1,7 @@
 package com.jackobo.capacitor.plugins.webview;
 
+import android.content.Intent;
+
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -23,6 +25,18 @@ public class CapacitorWebviewPlugin extends Plugin {
     private WebViewDialog _webViewDialog = null;
     @PluginMethod
     public void openWebView(PluginCall call) {
+        //openWithDialog(call);
+        openWithIntent(call);
+    }
+
+    private void openWithIntent(PluginCall call) {
+        OpenWebViewOptions options = new OpenWebViewOptions(call);
+        WebViewActivity.WebViewOptions = options;
+        Intent intent = new Intent(this.getContext().getApplicationContext(), WebViewActivity.class);
+        getContext().startActivity(intent);
+    }
+
+    private void openWithDialog(PluginCall call) {
         OpenWebViewOptions options = new OpenWebViewOptions(call);
 
         getActivity().runOnUiThread(new Runnable() {
