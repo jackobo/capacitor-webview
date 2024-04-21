@@ -1,7 +1,9 @@
 package com.jackobo.capacitor.plugins.webview;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
@@ -13,55 +15,87 @@ import androidx.annotation.NonNull;
 
 
 public class WebViewDialog extends Dialog {
-    public WebViewDialog(@NonNull Context context, OpenWebViewOptions openWebViewOptions) {
+    public WebViewDialog(@NonNull Context context, @NonNull OpenWebViewOptions openWebViewOptions) {
         super(context);
         _openWebViewOptions = openWebViewOptions;
     }
 
     private final OpenWebViewOptions _openWebViewOptions;
-    private WebView _webView;
 
     public void showWebViewDialog() {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setCancelable(true);
 
-        var window = getWindow();
-        if(window != null) {
-            window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
-        }
+        setupDialog();
+
+        //LinearLayout rootView = CreateRootLayout();
+
+        WebView webView = createWebView();
+
+        //rootView.addView(webView);
+
+        setContentView(webView);
+
+        webView.loadUrl(_openWebViewOptions.getUrl());
 
 
-        _webView = new WebView(getContext());
-        var webViewSettings = _webView.getSettings();
-        webViewSettings.setJavaScriptEnabled(true);
-        webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
-        webViewSettings.setDatabaseEnabled(true);
-        webViewSettings.setDomStorageEnabled(true);
-        webViewSettings.setAllowFileAccess(true);
-        //webViewSettings.setLoadWithOverviewMode(true);
-        //webViewSettings.setUseWideViewPort(true);
-        webViewSettings.setAllowFileAccessFromFileURLs(true);
-        webViewSettings.setAllowUniversalAccessFromFileURLs(true);
+        show();
 
-        _webView.setWebViewClient(new WebViewClient());
-        _webView.setWebChromeClient(new WebChromeClient());
+        webView.requestFocus();
+        webView.requestFocusFromTouch();
+
+
+
+        _openWebViewOptions.resolveCall();
+    }
+
+    private LinearLayout CreateRootLayout() {
+        LinearLayout rootView = new LinearLayout(getContext());
+        rootView.setOrientation(LinearLayout.VERTICAL);
 
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         );
-        _webView.setLayoutParams(layoutParams);
 
-        _webView.loadUrl(_openWebViewOptions.getUrl());
-        _webView.requestFocus();
-        _webView.requestFocusFromTouch();
+        rootView.setLayoutParams(layoutParams);
 
-        setContentView(_webView);
+        return rootView;
+    }
+    private void setupDialog() {
+        var window = getWindow();
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        show();
-
-        _openWebViewOptions.resolveCall();
+        //setCancelable(true);
     }
 
+
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private WebView createWebView() {
+
+        var webView = new WebView(getContext());
+        var webViewSettings = webView.getSettings();
+        webViewSettings.setJavaScriptEnabled(true);
+        webViewSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        webViewSettings.setDatabaseEnabled(true);
+        webViewSettings.setDomStorageEnabled(true);
+        webViewSettings.setAllowFileAccess(true);
+
+        webViewSettings.setLoadWithOverviewMode(true);
+        webViewSettings.setUseWideViewPort(true);
+
+        webViewSettings.setAllowFileAccessFromFileURLs(true);
+        webViewSettings.setAllowUniversalAccessFromFileURLs(true);
+
+        webView.setWebViewClient(new WebViewClient());
+        webView.setWebChromeClient(new WebChromeClient());
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        );
+        webView.setLayoutParams(layoutParams);
+        return webView;
+    }
 }
