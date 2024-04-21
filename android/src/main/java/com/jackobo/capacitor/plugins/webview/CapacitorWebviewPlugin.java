@@ -11,40 +11,27 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 @CapacitorPlugin(name = "CapacitorWebview")
 public class CapacitorWebviewPlugin extends Plugin {
 
-    private CapacitorWebview implementation = new CapacitorWebview();
 
-    @PluginMethod
-    public void echo(PluginCall call) {
-        String value = call.getString("value");
+    private IWebViewEvents _eventsCallbacks = new IWebViewEvents() {
 
-        JSObject ret = new JSObject();
-        ret.put("value", implementation.echo(value));
-        call.resolve(ret);
-    }
+        @Override
+        public void onUrlChanged(String url) {
+            notifyListeners("urlChangedEvent", new JSObject().put("url", url));
+        }
 
-    private WebViewDialog _webViewDialog = null;
+        @Override
+        public void onWebViewClosed(String url) {
+            notifyListeners("webViewClosedEvent", new JSObject().put("url", url));
+        }
+    };
+
+
     @PluginMethod
     public void openWebView(PluginCall call) {
-        //openWithDialog(call);
-        openWithIntent(call);
-    }
-
-    private void openWithIntent(PluginCall call) {
-        OpenWebViewOptions options = new OpenWebViewOptions(call);
+        OpenWebViewOptions options = new OpenWebViewOptions(call, _eventsCallbacks);
         WebViewActivity.WebViewOptions = options;
         Intent intent = new Intent(this.getContext(), WebViewActivity.class);
         getContext().startActivity(intent);
     }
 
-    private void openWithDialog(PluginCall call) {
-        OpenWebViewOptions options = new OpenWebViewOptions(call);
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                _webViewDialog = new WebViewDialog(getContext(), options);
-                _webViewDialog.showWebViewDialog();
-            }
-        });
-    }
 }

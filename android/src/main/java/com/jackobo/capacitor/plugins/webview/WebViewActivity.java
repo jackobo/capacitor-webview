@@ -13,7 +13,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
@@ -32,6 +31,7 @@ public class WebViewActivity extends AppCompatActivity {
 
 
     public static OpenWebViewOptions WebViewOptions;
+    private boolean _initialPageLoadOccured = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +59,16 @@ public class WebViewActivity extends AppCompatActivity {
 
 
         webView.loadUrl(WebViewOptions.getUrl());
+
+
     }
+
 
     @Override
     protected void onDestroy() {
+        WebView webView = findViewById(R.id.pluginWebView);
+        WebViewOptions.getEvents().onWebViewClosed(webView.getUrl());
         super.onDestroy();
-
     }
 
     private void setupActionBar(@Nullable WebViewToolbarOptions options) {
@@ -117,6 +121,19 @@ public class WebViewActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                if(!_initialPageLoadOccured) {
+                    _initialPageLoadOccured = true;
+                    webView.clearHistory();
+                    options.resolvePluginCall();
+                }
+            }
+
+            @Override
+            public void doUpdateVisitedHistory(WebView view, String url, boolean isReload) {
+                super.doUpdateVisitedHistory(view, url, isReload);
+                if(!isReload) {
+                    options.getEvents().onUrlChanged(url);
+                }
             }
         });
         webView.setWebChromeClient(new WebChromeClient());

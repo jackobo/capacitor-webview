@@ -54,14 +54,13 @@ export interface IOpenWebviewOptions {
 
 }
 
-
 /**
  * Emit when the url changes in the Webview
  * @since 0.0.1
  */
 export interface UrlChangedEvent {
   /**
-   * Emit when the url changes in the Webview
+   * The new URL in the WebView
    *
    * @since 0.0.1
    */
@@ -85,14 +84,21 @@ export interface WebviewClosedEvent {
  * @since 0.0.1
  */
 export type UrlChangeEventHandler = (state: UrlChangedEvent) => void;
-export type WebviewClosedEventHandler = (state: WebviewClosedEvent) => void;
+
+/**
+ * Handler for webViewClosedEvent event
+ * @since 0.0.1
+ */
+export type WebViewClosedEventHandler = (state: WebviewClosedEvent) => void;
+
+
 
 export interface CapacitorWebviewPlugin {
   openWebView(options: IOpenWebviewOptions): Promise<void>;
   closeWebview(): Promise<void>;
   reload(): Promise<void>;
   navigateTo(options: {url: string}): Promise<void>;
-  addListener(eventName: 'urlChanged', handler: UrlChangeEventHandler): Promise<PluginListenerHandle>;
-  addListener(eventName: 'webviewClosed', handler: WebviewClosedEventHandler): Promise<PluginListenerHandle>;
+  addListener(eventName: 'urlChangedEvent', handler: UrlChangeEventHandler): Promise<PluginListenerHandle>;
+  addListener(eventName: 'webViewClosedEvent', handler: WebViewClosedEventHandler): Promise<PluginListenerHandle>;
   removeAllListeners(): Promise<void>;
 }

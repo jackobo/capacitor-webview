@@ -3,7 +3,6 @@ package com.jackobo.capacitor.plugins.webview;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebChromeClient;
@@ -44,7 +43,7 @@ public class WebViewDialog extends Dialog {
 
 
 
-        _openWebViewOptions.resolveCall();
+        _openWebViewOptions.resolvePluginCall();
     }
 
     private LinearLayout CreateRootLayout() {

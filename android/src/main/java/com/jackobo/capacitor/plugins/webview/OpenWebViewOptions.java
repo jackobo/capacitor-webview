@@ -7,11 +7,17 @@ import com.getcapacitor.PluginCall;
 
 
 public class OpenWebViewOptions {
-    OpenWebViewOptions(PluginCall call) {
+    OpenWebViewOptions(PluginCall call, IWebViewEvents events) {
         this._pluginCall = call;
+        this._events = events;
     }
 
     private final PluginCall _pluginCall;
+    private final IWebViewEvents _events;
+
+    public IWebViewEvents getEvents() {
+        return this._events;
+    }
 
     public String getUrl() {
         return _pluginCall.getString("url");
@@ -42,7 +48,7 @@ public class OpenWebViewOptions {
 
      */
 
-    public void resolveCall() {
+    public void resolvePluginCall() {
         _pluginCall.resolve();
     }
 
