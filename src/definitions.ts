@@ -64,7 +64,7 @@ export type UrlChangeEventHandler = (state: UrlChangedEvent) => void;
 export type WebviewClosedEventHandler = (state: WebviewClosedEvent) => void;
 
 export interface CapacitorWebviewPlugin {
-  openWebview(options: IOpenWebviewOptions): Promise<void>;
+  openWebView(options: IOpenWebviewOptions): Promise<void>;
   closeWebview(): Promise<void>;
   reload(): Promise<void>;
   navigateTo(options: {url: string}): Promise<void>;

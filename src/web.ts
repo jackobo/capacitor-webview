@@ -7,7 +7,7 @@ export class CapacitorWebviewWeb extends WebPlugin implements CapacitorWebviewPl
   private _logMethodCall(methodName: string, ...parameters: any[]): void {
     console.log(`${methodName} not supported on web`, parameters);
   }
-  async openWebview(options: IOpenWebviewOptions): Promise<void> {
+  async openWebView(options: IOpenWebviewOptions): Promise<void> {
       this._logMethodCall('openWebview', options);
   }
   async closeWebview(): Promise<void> {

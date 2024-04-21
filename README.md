@@ -13,7 +13,7 @@ npx cap sync
 
 <docgen-index>
 
-* [`openWebview(...)`](#openwebview)
+* [`openWebView(...)`](#openwebview)
 * [`closeWebview()`](#closewebview)
 * [`reload()`](#reload)
 * [`navigateTo(...)`](#navigateto)
@@ -28,10 +28,10 @@ npx cap sync
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### openWebview(...)
+### openWebView(...)
 
 ```typescript
-openWebview(options: IOpenWebviewOptions) => Promise<void>
+openWebView(options: IOpenWebviewOptions) => Promise<void>
 ```
 
 | Param         | Type                                                                |
@@ -122,7 +122,7 @@ removeAllListeners() => Promise<void>
 | --------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------ | ----- |
 | **`url`**                   | <code>string</code>                                             | URL to load in the Webview                                                             |                    | 0.0.1 |
 | **`headers`**               | <code><a href="#record">Record</a>&lt;string, string&gt;</code> | Headers to append to the request                                                       |                    | 0.0.1 |
-| **`showAfterPageIsLoaded`** | <code>boolean</code>                                            | showAfterPageIsLoaded: if true the webview will be shown only after the page is loaded | <code>false</code> | 0.0.1 |
+| **`showAfterPageIsLoaded`** | <code>boolean</code>                                            | showAfterPageIsLoaded: if true the webview will be shown only after the page is loaded | <code>true</code>  | 0.0.1 |
 | **`allowDebug`**            | <code>boolean</code>                                            | Whether to enable debug on the webview                                                 | <code>false</code> | 0.0.1 |
 
 

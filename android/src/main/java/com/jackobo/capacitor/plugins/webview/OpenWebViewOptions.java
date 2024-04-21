@@ -1,6 +1,4 @@
 package com.jackobo.capacitor.plugins.webview;
-
-import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
 
 
@@ -9,12 +7,13 @@ public class OpenWebViewOptions {
         this._pluginCall = call;
     }
 
-    private PluginCall _pluginCall;
+    private final PluginCall _pluginCall;
 
     public String getUrl() {
         return _pluginCall.getString("url");
     }
 
+    /*
     public JSObject getHeaders() {
         return _pluginCall.getObject("headers");
     }
@@ -25,6 +24,12 @@ public class OpenWebViewOptions {
 
     public Boolean getAllowDebug() {
         return _pluginCall.getBoolean("allowDebug", false);
+    }
+
+     */
+
+    public void resolveCall() {
+        _pluginCall.resolve();
     }
 
 }
