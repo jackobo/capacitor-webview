@@ -8,4 +8,8 @@ public class CapacitorWebview {
         Log.i("Echo", value);
         return value;
     }
+
+    public void openWebView(OpenWebViewOptions options) {
+
+    }
 }

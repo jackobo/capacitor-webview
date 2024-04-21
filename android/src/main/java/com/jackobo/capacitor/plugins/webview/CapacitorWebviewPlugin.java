@@ -19,4 +19,18 @@ public class CapacitorWebviewPlugin extends Plugin {
         ret.put("value", implementation.echo(value));
         call.resolve(ret);
     }
+
+    private WebViewDialog _webViewDialog = null;
+    @PluginMethod
+    public void openWebView(PluginCall call) {
+        OpenWebViewOptions options = new OpenWebViewOptions(call);
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                _webViewDialog = new WebViewDialog(getContext(), options);
+                _webViewDialog.showWebViewDialog();
+            }
+        });
+    }
 }

@@ -16,7 +16,7 @@ export interface IOpenWebviewOptions {
   /**
    * showAfterPageIsLoaded: if true the webview will be shown only after the page is loaded
    * @since 0.0.1
-   * @default false
+   * @default true
    */
   showAfterPageIsLoaded?: boolean;
 
