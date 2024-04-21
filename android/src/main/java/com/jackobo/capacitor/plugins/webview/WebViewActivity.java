@@ -1,14 +1,20 @@
 package com.jackobo.capacitor.plugins.webview;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.text.Html;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -41,11 +47,30 @@ public class WebViewActivity extends AppCompatActivity {
             return insets;
         });
 
+        //setTitle("Aeroitalia");
+
+
+        var actionBar = getSupportActionBar();
+        if(actionBar != null) {
+
+            //actionBar.hide();
+            var backgroundColor = Color.parseColor("#FFFFFF");
+            var textColor = Color.parseColor("#000000");
+            actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
+            actionBar.setTitle(Html.fromHtml("<font color='#000000'>Aeroitalia</font>"));
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
+
+
+
         WebView webView = findViewById(R.id.pluginWebView);
         setupWebView(webView);
 
         webView.loadUrl(WebViewOptions.getUrl());
     }
+
+
 
 
     @SuppressLint("SetJavaScriptEnabled")

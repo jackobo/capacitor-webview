@@ -32,7 +32,7 @@ public class CapacitorWebviewPlugin extends Plugin {
     private void openWithIntent(PluginCall call) {
         OpenWebViewOptions options = new OpenWebViewOptions(call);
         WebViewActivity.WebViewOptions = options;
-        Intent intent = new Intent(this.getContext().getApplicationContext(), WebViewActivity.class);
+        Intent intent = new Intent(this.getContext(), WebViewActivity.class);
         getContext().startActivity(intent);
     }
 
