@@ -69,19 +69,20 @@ public class WebViewController: UIViewController {
     
     @objc private func createCloseButton(_ toolbarOptions: WebViewToolbarOptions) -> UIButton {
         let closeButton = UIButton(type: .system)
+        
         closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        //closeButton.setTitle("Done", for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.setTitleColor(UIColor(hex: toolbarOptions.color), for: .normal)
-        let buttonSize: CGFloat = 24 // Set the desired size of the button
-        closeButton.frame = CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize)
+        let color = UIColor(hex: toolbarOptions.color)
+        closeButton.setTitleColor(color, for: .normal)
+        closeButton.tintColor = color
+                
         return closeButton
     }
     
     @objc private func createTitleLable(_ toolbarOptions: WebViewToolbarOptions) -> UILabel {
         let titleLabel = UILabel()
-        titleLabel.text = title
+        titleLabel.text = toolbarOptions.title
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.textColor = UIColor(hex: toolbarOptions.color)
@@ -96,11 +97,13 @@ public class WebViewController: UIViewController {
         
         let toolbar = UIToolbar()
         toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.backgroundColor = UIColor(hex: toolbarOptions.backgroundColor)
+        toolbar.barTintColor = UIColor(hex: toolbarOptions.backgroundColor)
         view.addSubview(toolbar)
         
         let closeButton = createCloseButton(toolbarOptions)
         toolbar.addSubview(closeButton)
+        
+        
         
         let titleLabel = createTitleLable(toolbarOptions)
         toolbar.addSubview(titleLabel)
@@ -108,6 +111,7 @@ public class WebViewController: UIViewController {
   
         // Layout constraints
         let guide = view.safeAreaLayoutGuide
+        let buttonSize: CGFloat = 16
         NSLayoutConstraint.activate([
             toolbar.topAnchor.constraint(equalTo: guide.topAnchor),
             toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -116,6 +120,9 @@ public class WebViewController: UIViewController {
             
             closeButton.leadingAnchor.constraint(equalTo: toolbar.leadingAnchor, constant: 8),
             closeButton.centerYAnchor.constraint(equalTo: toolbar.centerYAnchor),
+            
+            closeButton.widthAnchor.constraint(equalToConstant: buttonSize),
+            closeButton.heightAnchor.constraint(equalToConstant: buttonSize),
             
             titleLabel.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor, constant: 8),
             titleLabel.centerYAnchor.constraint(equalTo: toolbar.centerYAnchor),
