@@ -13,14 +13,16 @@ import WebKit
 @objc
 public class WebViewController: UIViewController {
     
-    private var activityIndicatorView: UIActivityIndicatorView?
-    
+    private let _options: OpenWebViewOptions;
+    private var _webView: WKWebView? = nil;
+    private var _activityIndicatorView: UIActivityIndicatorView?
     private let _pluginEvents: CapacitorWebViewPluginEvents
     private var _isInitialPageLoad: Bool = true
-    private var _lastVisitedUrl: URL? = nil
+    
     
     init(options: OpenWebViewOptions, parentViewController: UIViewController, pluginEvents: CapacitorWebViewPluginEvents) {
        
+        self._options = options;
         self._pluginEvents = pluginEvents;
         super.init(nibName: nil, bundle: nil);
         
@@ -30,15 +32,13 @@ public class WebViewController: UIViewController {
             
         }
         
-        
-        
         let spinnerView = UIActivityIndicatorView(style: .medium)
         spinnerView.hidesWhenStopped = true
         spinnerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(spinnerView)
         spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        self.activityIndicatorView = spinnerView
+        self._activityIndicatorView = spinnerView
                     
         
         
@@ -65,14 +65,13 @@ public class WebViewController: UIViewController {
                 
             }
             
+            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: .new, context: nil)
             webView.isHidden = true
             webView.navigationDelegate = self
             webView.load(URLRequest(url: url));
-            
+            self._webView = webView;
         }
        
-        
-        
         modalPresentationStyle = .fullScreen
         view.backgroundColor = .clear
         
@@ -91,9 +90,11 @@ public class WebViewController: UIViewController {
             dismiss(animated: true, completion: nil)
     }
     
-    public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+    @objc public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        
         super.dismiss(animated: flag, completion: completion);
-        _pluginEvents.notifyClosed(_lastVisitedUrl)
+        self._options.resolveCall(self._webView?.url);
+        self._pluginEvents.notifyClosed(self._webView?.url)
     }
     
     @objc private func setupToolbar(_ options: WebViewToolbarOptions) -> UIToolbar {
@@ -143,7 +144,18 @@ public class WebViewController: UIViewController {
         return toolbar;
     }
    
+   
+    @objc public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(WKWebView.url), let newURL = change?[.newKey] as? URL {
+            self._pluginEvents.notifyUrlChanged(newURL)
+           
+        }
+    }
     
+    deinit {
+          // Remove observer to avoid memory leaks
+        self._webView?.removeObserver(self, forKeyPath: #keyPath(WKWebView.url))
+    }
 }
 
 
@@ -167,33 +179,26 @@ extension UIColor {
 
 extension WebViewController: WKNavigationDelegate {
     
-    public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    @objc public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
      
         if(self._isInitialPageLoad) {
-            activityIndicatorView?.startAnimating()
+            _activityIndicatorView?.startAnimating()
            
             webView.isHidden = true
         }
       
     }
     
-    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        
+    @objc public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
         if(self._isInitialPageLoad) {
             self._isInitialPageLoad = false;
-            activityIndicatorView?.stopAnimating()
+            _activityIndicatorView?.stopAnimating()
             webView.isHidden = false
-        } else {
-            if let url = webView.url {
-                self._pluginEvents.notifyUrlChanged(url)
-            }
         }
        
-        self._lastVisitedUrl = webView.url;
-                
-       
     }
+    
     
 
 }

@@ -32,15 +32,19 @@ Android and iOS only.
 ### openWebView(...)
 
 ```typescript
-openWebView(options: IOpenWebviewOptions) => Promise<void>
+openWebView(options: IOpenWebViewOptions) => Promise<IOpenWebViewResponse>
 ```
 
 Opens a new WebView using parameters specified in options.
 After opening the WebView the urlChanged event is also triggered for the initial URL provided in the options parameter.
+Method resolves when the WebView is closed either by the user or programatically by calling closeWebView.
+The response contains the URL that was in the WebView by the time of closing it.
 
 | Param         | Type                                                                |
 | ------------- | ------------------------------------------------------------------- |
-| **`options`** | <code><a href="#iopenwebviewoptions">IOpenWebviewOptions</a></code> |
+| **`options`** | <code><a href="#iopenwebviewoptions">IOpenWebViewOptions</a></code> |
+
+**Returns:** <code>Promise&lt;<a href="#iopenwebviewresponse">IOpenWebViewResponse</a>&gt;</code>
 
 **Since:** 1.0.0
 
@@ -53,7 +57,7 @@ After opening the WebView the urlChanged event is also triggered for the initial
 closeWebView() => Promise<void>
 ```
 
-Programmatically closes the WebView. The webViewClosed event is triggered also when closing it programmatically.
+Programmatically closes the WebView. The webViewClosed event is triggered also when calling this method.
 
 --------------------
 
@@ -116,7 +120,16 @@ Removes all events subscriptions
 ### Interfaces
 
 
-#### IOpenWebviewOptions
+#### IOpenWebViewResponse
+
+The result of the openWebView method
+
+| Prop      | Type                | Description                                  | Since |
+| --------- | ------------------- | -------------------------------------------- | ----- |
+| **`url`** | <code>string</code> | The URL in the WebView by the time is closed | 1.0.0 |
+
+
+#### IOpenWebViewOptions
 
 | Prop             | Type                                                                      | Description                                                                                                     | Default            | Since |
 | ---------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
@@ -155,9 +168,9 @@ Emit when the url changes in the Webview
 
 Emit when the Webview is closed
 
-| Prop      | Type                | Description                                         |
-| --------- | ------------------- | --------------------------------------------------- |
-| **`url`** | <code>string</code> | Current URL in the Webview by the time it is closed |
+| Prop      | Type                | Description                                         | Since |
+| --------- | ------------------- | --------------------------------------------------- | ----- |
+| **`url`** | <code>string</code> | Current URL in the Webview by the time it is closed | 1.0.0 |
 
 
 ### Type Aliases

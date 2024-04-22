@@ -68,5 +68,13 @@ import Capacitor
                 
         }
     }
+    
+    @objc func resolveCall(_ url: URL?) {
+        
+        self._pluginCall.resolve([
+            "url": url?.absoluteString ?? ""
+        ])
+        
+    }
 }
 

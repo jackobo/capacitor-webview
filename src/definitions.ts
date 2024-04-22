@@ -19,7 +19,7 @@ export interface IWebViewToolbarOptions {
   color: string;
 }
 
-export interface IOpenWebviewOptions {
+export interface IOpenWebViewOptions {
   /**
    * URL to load in the Webview
    * @since 1.0.0
@@ -49,8 +49,19 @@ export interface IOpenWebviewOptions {
 }
 
 /**
+ * The result of the openWebView method
+ */
+export interface IOpenWebViewResponse {
+  /**
+   * The URL in the WebView by the time is closed
+   *
+   * @since 1.0.0
+   */
+  url: string;
+}
+
+/**
  * Emit when the url changes in the Webview
- * @since 1.0.0
  */
 export interface UrlChangedEvent {
   /**
@@ -69,18 +80,22 @@ export interface UrlChangedEvent {
 export interface WebViewClosedEvent {
   /**
    * Current URL in the Webview by the time it is closed
+   *
+   * @since 1.0.0
    */
   url: string;
 }
 
 /**
  * Handler for urlChanged event
+ *
  * @since 1.0.0
  */
 export type UrlChangedEventHandler = (state: UrlChangedEvent) => void;
 
 /**
  * Handler for webViewClosedEvent event
+ *
  * @since 1.0.0
  */
 export type WebViewClosedEventHandler = (state: WebViewClosedEvent) => void;
@@ -94,13 +109,17 @@ export interface CapacitorWebviewPlugin {
   /**
    * Opens a new WebView using parameters specified in options.
    * After opening the WebView the urlChanged event is also triggered for the initial URL provided in the options parameter.
+   * Method resolves when the WebView is closed either by the user or programatically by calling closeWebView.
+   * The response contains the URL that was in the WebView by the time of closing it.
    * @param options
+   * @returns Promise<IOpenWebViewResponse>
+   *
    * @since 1.0.0
    */
-  openWebView(options: IOpenWebviewOptions): Promise<void>;
+  openWebView(options: IOpenWebViewOptions): Promise<IOpenWebViewResponse>;
 
   /**
-   * Programmatically closes the WebView. The webViewClosed event is triggered also when closing it programmatically.
+   * Programmatically closes the WebView. The webViewClosed event is triggered also when calling this method.
    */
   closeWebView(): Promise<void>;
 
@@ -109,6 +128,7 @@ export interface CapacitorWebviewPlugin {
    * This event is triggered when navigation occurs inside the WebView
    * @param eventName
    * @param handler
+   *
    * @since 1.0.0
    */
   addListener(eventName: 'urlChanged', handler: UrlChangedEventHandler): Promise<PluginListenerHandle>;
@@ -118,12 +138,14 @@ export interface CapacitorWebviewPlugin {
    * This event is triggered when user closes the WebView or when the WebView is closed programmatically by calling closeWebView
    * @param eventName
    * @param handler
+   *
    * @since 1.0.0
    */
   addListener(eventName: 'webViewClosed', handler: WebViewClosedEventHandler): Promise<PluginListenerHandle>;
 
   /**
    * Removes all events subscriptions
+   *
    * @since 1.0.0
    */
   removeAllListeners(): Promise<void>;
