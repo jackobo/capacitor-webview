@@ -1,15 +1,19 @@
 package com.jackobo.capacitor.plugins.webview;
+
 import androidx.annotation.Nullable;
 
 import com.getcapacitor.PluginCall;
 
-
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 
 public class OpenWebViewOptions {
     OpenWebViewOptions(PluginCall call, IWebViewEvents events) {
         this._pluginCall = call;
         this._events = events;
+        loadHeaders();
     }
 
     private final PluginCall _pluginCall;
@@ -33,20 +37,42 @@ public class OpenWebViewOptions {
         return new WebViewToolbarOptions(jsOptions);
     }
 
-    /*
-    public JSObject getHeaders() {
-        return _pluginCall.getObject("headers");
+
+
+
+    private void loadHeaders() {
+
+        var jsHeaders = _pluginCall.getObject("headers");
+
+        if(jsHeaders == null) {
+            return;
+        }
+
+        Iterator<String> keys = jsHeaders.keys();
+
+        while (keys.hasNext()) {
+            String key = keys.next();
+            if (key.equalsIgnoreCase("user-agent")) {
+                _userAgent = jsHeaders.getString(key);
+            } else {
+                _headers.put(key, jsHeaders.getString(key));
+            }
+        }
+
     }
 
-    public Boolean getShowAfterPageIsLoaded() {
-        return _pluginCall.getBoolean("showAfterPageIsLoaded", true);
+    private String _userAgent = null;
+
+    @Nullable
+    public String getUserAgent() {
+        return _userAgent;
     }
 
-    public Boolean getAllowDebug() {
-        return _pluginCall.getBoolean("allowDebug", false);
+    private final HashMap<String, String> _headers = new HashMap<>();
+    public Map<String, String> getHeaders() {
+        return _headers;
     }
 
-     */
 
     public void resolvePluginCall() {
         _pluginCall.resolve();

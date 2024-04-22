@@ -27,7 +27,7 @@ export interface IOpenWebviewOptions {
   url: string;
 
   /**
-   * Headers to append to the request
+   * Headers to be appended to the initial request. These are not used for subsequent navigation inside the WebView.
    * @since 1.0.0
    */
   headers?: Record<string, string>;

@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -61,14 +62,12 @@ public class WebViewActivity extends AppCompatActivity {
             return insets;
         });
 
+        var options = WebViewOptions;
+        setupActionBar(options.getToolbarOptions());
 
-        setupActionBar(WebViewOptions.getToolbarOptions());
+        var webView = setupWebView(options);
 
-
-        WebView webView = setupWebView(WebViewOptions);
-
-
-        webView.loadUrl(WebViewOptions.getUrl());
+        webView.loadUrl(options.getUrl(), options.getHeaders());
     }
 
     @Override
@@ -143,6 +142,10 @@ public class WebViewActivity extends AppCompatActivity {
 
         webViewSettings.setAllowFileAccessFromFileURLs(true);
         webViewSettings.setAllowUniversalAccessFromFileURLs(true);
+        if(!TextUtils.isEmpty(options.getUserAgent())) {
+            webViewSettings.setUserAgentString(options.getUserAgent());
+        }
+
 
         webView.setWebViewClient(new WebViewClient(){
             @Override
