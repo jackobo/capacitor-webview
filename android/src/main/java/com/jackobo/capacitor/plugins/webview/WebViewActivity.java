@@ -152,7 +152,7 @@ public class WebViewActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if(!_initialPageLoadOccurred) {
-                    var spinner = findViewById(R.id.webViewSpinner);
+                    var spinner = findViewById(R.id.webViewLoadingProgress);
                     spinner.setVisibility(View.GONE);
                     webView.setVisibility(View.VISIBLE);
                     _initialPageLoadOccurred = true;

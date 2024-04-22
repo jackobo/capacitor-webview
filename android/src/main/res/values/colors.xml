@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="webview_back_arrow_color">#000000</color>
+    <color name="progress_bar_color">#000000</color>
 </resources>

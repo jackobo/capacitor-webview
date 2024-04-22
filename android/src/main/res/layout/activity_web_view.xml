@@ -18,14 +18,17 @@
 
 
     <ProgressBar
-        android:id="@+id/webViewSpinner"
-        style="?android:attr/progressBarStyle"
+        android:id="@+id/webViewLoadingProgress"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/webViewActivity"
         app:layout_constraintEnd_toEndOf="@id/webViewActivity"
         app:layout_constraintStart_toStartOf="@id/webViewActivity"
-        app:layout_constraintTop_toTopOf="@+id/pluginWebView" />
+        app:layout_constraintTop_toTopOf="@+id/pluginWebView"
+        android:indeterminate="true"
+        android:indeterminateTintMode="src_atop"
+        android:indeterminateTint="@color/progress_bar_color"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
