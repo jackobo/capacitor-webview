@@ -13,10 +13,15 @@ import WebKit
 @objc
 public class WebViewController: UIViewController {
     
-   
+    private var activityIndicatorView: UIActivityIndicatorView?
     
-    init(options: OpenWebViewOptions, parentViewController: UIViewController) {
+    private let _pluginEvents: CapacitorWebViewPluginEvents
+    private var _isInitialPageLoad: Bool = true
+    private var _lastVisitedUrl: URL? = nil
+    
+    init(options: OpenWebViewOptions, parentViewController: UIViewController, pluginEvents: CapacitorWebViewPluginEvents) {
        
+        self._pluginEvents = pluginEvents;
         super.init(nibName: nil, bundle: nil);
         
         var toolbar: UIToolbar? = nil
@@ -25,15 +30,23 @@ public class WebViewController: UIViewController {
             
         }
         
-        let webView = WKWebView(frame: UIScreen.main.bounds);
+        
+        
+        let spinnerView = UIActivityIndicatorView(style: .medium)
+        spinnerView.hidesWhenStopped = true
+        spinnerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(spinnerView)
+        spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        self.activityIndicatorView = spinnerView
+                    
+        
         
         if let url = URL(string: options.url) {
-            
+            let webView = WKWebView(frame: UIScreen.main.bounds);
             view.addSubview(webView)
             webView.translatesAutoresizingMaskIntoConstraints = false
             
-          
-             // Layout constraints for WKWebView
             if let toolbar = toolbar {
                 NSLayoutConstraint.activate([
                     webView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
@@ -52,11 +65,12 @@ public class WebViewController: UIViewController {
                 
             }
             
+            webView.isHidden = true
+            webView.navigationDelegate = self
             webView.load(URLRequest(url: url));
             
         }
        
-        
         
         
         modalPresentationStyle = .fullScreen
@@ -75,6 +89,11 @@ public class WebViewController: UIViewController {
 
     @objc func closeButtonTapped() {
             dismiss(animated: true, completion: nil)
+    }
+    
+    public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion);
+        _pluginEvents.notifyClosed(_lastVisitedUrl)
     }
     
     @objc private func setupToolbar(_ options: WebViewToolbarOptions) -> UIToolbar {
@@ -146,3 +165,35 @@ extension UIColor {
     }
 }
 
+extension WebViewController: WKNavigationDelegate {
+    
+    public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+     
+        if(self._isInitialPageLoad) {
+            activityIndicatorView?.startAnimating()
+           
+            webView.isHidden = true
+        }
+      
+    }
+    
+    public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        
+        
+        if(self._isInitialPageLoad) {
+            self._isInitialPageLoad = false;
+            activityIndicatorView?.stopAnimating()
+            webView.isHidden = false
+        } else {
+            if let url = webView.url {
+                self._pluginEvents.notifyUrlChanged(url)
+            }
+        }
+       
+        self._lastVisitedUrl = webView.url;
+                
+       
+    }
+    
+
+}
