@@ -17,16 +17,21 @@ public class WebViewController: UIViewController {
         super.init(nibName: nil, bundle: nil);
         
         let webView = WKWebView(frame: UIScreen.main.bounds);
-       
         
+        
+               
         if let url = URL(string: options.url) {
             view.addSubview(webView)
             webView.translatesAutoresizingMaskIntoConstraints = false
             webView.fillSuperview()
             webView.load(URLRequest(url: url));
-           
-           
         }
+        
+        
+        if let toolBarOptions = options.toolbar {
+            setupToolbar(toolBarOptions);
+        }
+                
         
         modalPresentationStyle = .fullScreen
         view.backgroundColor = .clear
@@ -39,6 +44,46 @@ public class WebViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc func closeButtonTapped() {
+            dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func setupToolbar(_ options: WebViewToolbarOptions) {
+        let toolbar = UIToolbar()
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(toolbar)
+        
+        // Add close button
+        let closeButton = UIButton(type: .system)
+        closeButton.setTitle("Done", for: .normal)
+        closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        toolbar.addSubview(closeButton)
+        
+        // Add title label
+        let titleLabel = UILabel()
+        titleLabel.text = title
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        toolbar.addSubview(titleLabel)
+        
+  
+        // Layout constraints
+        let guide = view.safeAreaLayoutGuide
+        NSLayoutConstraint.activate([
+            toolbar.topAnchor.constraint(equalTo: guide.topAnchor),
+            toolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            toolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            toolbar.heightAnchor.constraint(equalToConstant: 44),
+            
+            closeButton.leadingAnchor.constraint(equalTo: toolbar.leadingAnchor, constant: 8),
+            closeButton.centerYAnchor.constraint(equalTo: toolbar.centerYAnchor),
+            
+            titleLabel.leadingAnchor.constraint(equalTo: closeButton.trailingAnchor, constant: 8),
+            titleLabel.centerYAnchor.constraint(equalTo: toolbar.centerYAnchor),
+        ])
+        
+    }
    
     
 }
