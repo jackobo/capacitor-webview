@@ -1,6 +1,6 @@
 import { WebPlugin } from '@capacitor/core';
 
-import {CapacitorWebviewPlugin, IOpenWebviewOptions} from './definitions';
+import type {CapacitorWebviewPlugin, IOpenWebviewOptions} from './definitions';
 
 export class CapacitorWebviewWeb extends WebPlugin implements CapacitorWebviewPlugin {
 
@@ -12,11 +12,5 @@ export class CapacitorWebviewWeb extends WebPlugin implements CapacitorWebviewPl
   }
   async closeWebView(): Promise<void> {
     this._logMethodCall('closeWebview');
-  }
-  async reload(): Promise<void> {
-    this._logMethodCall('reload');
-  }
-  async navigateTo(options: { url: string; }): Promise<void> {
-    this._logMethodCall('navigateTo', options);
   }
 }

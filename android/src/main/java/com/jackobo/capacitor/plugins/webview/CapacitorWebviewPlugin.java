@@ -16,12 +16,12 @@ public class CapacitorWebviewPlugin extends Plugin {
 
         @Override
         public void onUrlChanged(String url) {
-            notifyListeners("urlChangedEvent", new JSObject().put("url", url));
+            notifyListeners("urlChanged", new JSObject().put("url", url));
         }
 
         @Override
         public void onWebViewClosed(String url) {
-            notifyListeners("webViewClosedEvent", new JSObject().put("url", url));
+            notifyListeners("webViewClosed", new JSObject().put("url", url));
         }
     };
 

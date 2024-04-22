@@ -15,10 +15,8 @@ npx cap sync
 
 * [`openWebView(...)`](#openwebview)
 * [`closeWebView()`](#closewebview)
-* [`reload()`](#reload)
-* [`navigateTo(...)`](#navigateto)
-* [`addListener('urlChangedEvent', ...)`](#addlistenerurlchangedevent-)
-* [`addListener('webViewClosedEvent', ...)`](#addlistenerwebviewclosedevent-)
+* [`addListener('urlChanged', ...)`](#addlistenerurlchanged-)
+* [`addListener('webViewClosed', ...)`](#addlistenerwebviewclosed-)
 * [`removeAllListeners()`](#removealllisteners)
 * [Interfaces](#interfaces)
 * [Type Aliases](#type-aliases)
@@ -28,15 +26,23 @@ npx cap sync
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
+A capacitor plugin for opening a second WebView inside your app.
+Android and iOS only.
+
 ### openWebView(...)
 
 ```typescript
 openWebView(options: IOpenWebviewOptions) => Promise<void>
 ```
 
+Opens a new WebView using parameters specified in options.
+After opening the WebView the urlChanged event is also triggered for the initial URL provided in the options parameter.
+
 | Param         | Type                                                                |
 | ------------- | ------------------------------------------------------------------- |
 | **`options`** | <code><a href="#iopenwebviewoptions">IOpenWebviewOptions</a></code> |
+
+**Since:** 1.0.0
 
 --------------------
 
@@ -47,59 +53,49 @@ openWebView(options: IOpenWebviewOptions) => Promise<void>
 closeWebView() => Promise<void>
 ```
 
---------------------
-
-
-### reload()
-
-```typescript
-reload() => Promise<void>
-```
+Programmatically closes the WebView. The webViewClosed event is triggered also when closing it programmatically.
 
 --------------------
 
 
-### navigateTo(...)
+### addListener('urlChanged', ...)
 
 ```typescript
-navigateTo(options: { url: string; }) => Promise<void>
+addListener(eventName: 'urlChanged', handler: UrlChangedEventHandler) => Promise<PluginListenerHandle>
 ```
 
-| Param         | Type                          |
-| ------------- | ----------------------------- |
-| **`options`** | <code>{ url: string; }</code> |
+Subscribes to urlChanged event.
+This event is triggered when navigation occurs inside the WebView
 
---------------------
-
-
-### addListener('urlChangedEvent', ...)
-
-```typescript
-addListener(eventName: 'urlChangedEvent', handler: UrlChangeEventHandler) => Promise<PluginListenerHandle>
-```
-
-| Param           | Type                                                                    |
-| --------------- | ----------------------------------------------------------------------- |
-| **`eventName`** | <code>'urlChangedEvent'</code>                                          |
-| **`handler`**   | <code><a href="#urlchangeeventhandler">UrlChangeEventHandler</a></code> |
+| Param           | Type                                                                      |
+| --------------- | ------------------------------------------------------------------------- |
+| **`eventName`** | <code>'urlChanged'</code>                                                 |
+| **`handler`**   | <code><a href="#urlchangedeventhandler">UrlChangedEventHandler</a></code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
 
+**Since:** 1.0.0
+
 --------------------
 
 
-### addListener('webViewClosedEvent', ...)
+### addListener('webViewClosed', ...)
 
 ```typescript
-addListener(eventName: 'webViewClosedEvent', handler: WebViewClosedEventHandler) => Promise<PluginListenerHandle>
+addListener(eventName: 'webViewClosed', handler: WebViewClosedEventHandler) => Promise<PluginListenerHandle>
 ```
+
+Subscribes to webViewClosed event.
+This event is triggered when user closes the WebView or when the WebView is closed programmatically by calling closeWebView
 
 | Param           | Type                                                                            |
 | --------------- | ------------------------------------------------------------------------------- |
-| **`eventName`** | <code>'webViewClosedEvent'</code>                                               |
+| **`eventName`** | <code>'webViewClosed'</code>                                                    |
 | **`handler`**   | <code><a href="#webviewclosedeventhandler">WebViewClosedEventHandler</a></code> |
 
 **Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
+
+**Since:** 1.0.0
 
 --------------------
 
@@ -110,6 +106,10 @@ addListener(eventName: 'webViewClosedEvent', handler: WebViewClosedEventHandler)
 removeAllListeners() => Promise<void>
 ```
 
+Removes all events subscriptions
+
+**Since:** 1.0.0
+
 --------------------
 
 
@@ -118,22 +118,21 @@ removeAllListeners() => Promise<void>
 
 #### IOpenWebviewOptions
 
-| Prop                        | Type                                                                      | Description                                                                            | Default            | Since |
-| --------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ------------------ | ----- |
-| **`url`**                   | <code>string</code>                                                       | URL to load in the Webview                                                             |                    | 0.0.1 |
-| **`headers`**               | <code><a href="#record">Record</a>&lt;string, string&gt;</code>           | Headers to append to the request                                                       |                    | 0.0.1 |
-| **`showAfterPageIsLoaded`** | <code>boolean</code>                                                      | showAfterPageIsLoaded: if true the webview will be shown only after the page is loaded | <code>true</code>  | 0.0.1 |
-| **`allowDebug`**            | <code>boolean</code>                                                      | Whether to enable debug on the webview                                                 | <code>false</code> | 0.0.1 |
-| **`toolbar`**               | <code><a href="#iwebviewtoolbaroptions">IWebViewToolbarOptions</a></code> | Specify toolbar options. If null or undefined the toolbar will not be shown            |                    | 0.0.1 |
+| Prop             | Type                                                                      | Description                                                                 | Default            | Since |
+| ---------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- | ------------------ | ----- |
+| **`url`**        | <code>string</code>                                                       | URL to load in the Webview                                                  |                    | 1.0.0 |
+| **`headers`**    | <code><a href="#record">Record</a>&lt;string, string&gt;</code>           | Headers to append to the request                                            |                    | 1.0.0 |
+| **`allowDebug`** | <code>boolean</code>                                                      | Whether to enable debug on the webview (iOS only)                           | <code>false</code> | 1.0.0 |
+| **`toolbar`**    | <code><a href="#iwebviewtoolbaroptions">IWebViewToolbarOptions</a></code> | Specify toolbar options. If null or undefined the toolbar will not be shown |                    | 1.0.0 |
 
 
 #### IWebViewToolbarOptions
 
 | Prop                  | Type                | Description                                                  | Since |
 | --------------------- | ------------------- | ------------------------------------------------------------ | ----- |
-| **`title`**           | <code>string</code> | The text to appear in the toolbar                            | 0.0.1 |
-| **`backgroundColor`** | <code>string</code> | Background color of the toolbar in hex format                | 0.0.1 |
-| **`color`**           | <code>string</code> | The color for the title and for the back arrow in hex format | 0.0.1 |
+| **`title`**           | <code>string</code> | The text to appear in the toolbar                            | 1.0.0 |
+| **`backgroundColor`** | <code>string</code> | Background color of the toolbar in hex format                | 1.0.0 |
+| **`color`**           | <code>string</code> | The color for the title and for the back arrow in hex format | 1.0.0 |
 
 
 #### PluginListenerHandle
@@ -149,10 +148,10 @@ Emit when the url changes in the Webview
 
 | Prop      | Type                | Description                | Since |
 | --------- | ------------------- | -------------------------- | ----- |
-| **`url`** | <code>string</code> | The new URL in the WebView | 0.0.1 |
+| **`url`** | <code>string</code> | The new URL in the WebView | 1.0.0 |
 
 
-#### WebviewClosedEvent
+#### WebViewClosedEvent
 
 Emit when the Webview is closed
 
@@ -171,7 +170,7 @@ Construct a type with a set of properties K of type T
 <code>{ [P in K]: T; }</code>
 
 
-#### UrlChangeEventHandler
+#### UrlChangedEventHandler
 
 Handler for urlChanged event
 
@@ -182,6 +181,6 @@ Handler for urlChanged event
 
 Handler for webViewClosedEvent event
 
-<code>(state: <a href="#webviewclosedevent">WebviewClosedEvent</a>): void</code>
+<code>(state: <a href="#webviewclosedevent">WebViewClosedEvent</a>): void</code>
 
 </docgen-api>
