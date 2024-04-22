@@ -7,12 +7,22 @@ import Capacitor
  */
 @objc(CapacitorWebviewPlugin)
 public class CapacitorWebviewPlugin: CAPPlugin {
-    private let implementation = CapacitorWebview()
-
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": implementation.echo(value)
-        ])
+    
+    @objc func openWebView(_ call: CAPPluginCall) {
+        let options = OpenWebViewOptions(call);
+        
+        
+        DispatchQueue.main.async {
+            if let viewCtrl = self.bridge?.viewController {
+                let webViewController = WebViewController(options: options, parentViewController: viewCtrl);
+                viewCtrl.present(webViewController, animated: true, completion: nil);
+                call.resolve();
+            } else {
+                call.reject("self.bridge?.viewController is null");
+            }
+                    
+        }
+        
     }
+    
 }
