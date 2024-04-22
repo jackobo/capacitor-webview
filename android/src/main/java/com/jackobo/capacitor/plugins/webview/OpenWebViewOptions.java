@@ -2,6 +2,7 @@ package com.jackobo.capacitor.plugins.webview;
 
 import androidx.annotation.Nullable;
 
+import com.getcapacitor.JSObject;
 import com.getcapacitor.PluginCall;
 
 import java.util.HashMap;
@@ -74,8 +75,10 @@ public class OpenWebViewOptions {
     }
 
 
-    public void resolvePluginCall() {
-        _pluginCall.resolve();
+    public void resolvePluginCall(String url) {
+        JSObject ret = new JSObject();
+        ret.put("url", url);
+        _pluginCall.resolve(ret);
     }
 
 }

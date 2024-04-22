@@ -86,8 +86,10 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         WebView webView = findViewById(R.id.pluginWebView);
-        WebViewOptions.getEvents().onWebViewClosed(webView.getUrl());
+        var url = webView.getUrl();
         super.onDestroy();
+        WebViewOptions.resolvePluginCall(url);
+        WebViewOptions.getEvents().onWebViewClosed(url);
     }
 
     private void setupWindow() {
@@ -113,7 +115,7 @@ public class WebViewActivity extends AppCompatActivity {
 
         var htmlTitle = String.format("<font color='%s'>%s</font>", options.getColor(), options.getTitle());
         actionBar.setTitle(Html.fromHtml(htmlTitle));
-        
+
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
@@ -152,12 +154,11 @@ public class WebViewActivity extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 if(!_initialPageLoadOccurred) {
+                    _initialPageLoadOccurred = true;
                     var spinner = findViewById(R.id.webViewLoadingProgress);
                     spinner.setVisibility(View.GONE);
                     webView.setVisibility(View.VISIBLE);
-                    _initialPageLoadOccurred = true;
                     webView.clearHistory();
-                    options.resolvePluginCall();
                 }
             }
 
