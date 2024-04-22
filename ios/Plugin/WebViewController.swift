@@ -13,65 +13,26 @@ import WebKit
 @objc
 public class WebViewController: UIViewController {
     
-    private let _options: OpenWebViewOptions;
-    private var _webView: WKWebView? = nil;
-    private var _activityIndicatorView: UIActivityIndicatorView?
+    private let _options: OpenWebViewOptions
     private let _pluginEvents: CapacitorWebViewPluginEvents
+    
+    private var _webView: WKWebView? = nil
+    private var _activityIndicatorView: UIActivityIndicatorView?
+    
     private var _isInitialPageLoad: Bool = true
     
     
     init(options: OpenWebViewOptions, parentViewController: UIViewController, pluginEvents: CapacitorWebViewPluginEvents) {
        
-        self._options = options;
-        self._pluginEvents = pluginEvents;
-        super.init(nibName: nil, bundle: nil);
+        self._options = options
+        self._pluginEvents = pluginEvents
         
-        var toolbar: UIToolbar? = nil
-        if let toolBarOptions = options.toolbar {
-            toolbar = setupToolbar(toolBarOptions);
-            
-        }
+        super.init(nibName: nil, bundle: nil)
         
-        let spinnerView = UIActivityIndicatorView(style: .medium)
-        spinnerView.hidesWhenStopped = true
-        spinnerView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(spinnerView)
-        spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        self._activityIndicatorView = spinnerView
-                    
+        let toolbar = setupToolbar()
+        self._activityIndicatorView = setupSpinner()
+        self._webView = setupWebView(toolbar: toolbar)
         
-        
-        if let url = URL(string: options.url) {
-            let webView = WKWebView(frame: UIScreen.main.bounds);
-            view.addSubview(webView)
-            webView.translatesAutoresizingMaskIntoConstraints = false
-            
-            if let toolbar = toolbar {
-                NSLayoutConstraint.activate([
-                    webView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
-                    webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                ])
-            } else {
-                let guide = view.safeAreaLayoutGuide
-                NSLayoutConstraint.activate([
-                    webView.topAnchor.constraint(equalTo: guide.topAnchor),
-                    webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                    webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                    webView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
-                ])
-                
-            }
-            
-            webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: .new, context: nil)
-            webView.isHidden = true
-            webView.navigationDelegate = self
-            webView.load(URLRequest(url: url));
-            self._webView = webView;
-        }
-       
         modalPresentationStyle = .fullScreen
         view.backgroundColor = .clear
         
@@ -84,45 +45,64 @@ public class WebViewController: UIViewController {
     }
     
 
-   
-
-    @objc func closeButtonTapped() {
-            dismiss(animated: true, completion: nil)
+    @objc private func closeButtonTapped() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc public override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
-        
         super.dismiss(animated: flag, completion: completion);
         self._options.resolveCall(self._webView?.url);
         self._pluginEvents.notifyClosed(self._webView?.url)
     }
     
-    @objc private func setupToolbar(_ options: WebViewToolbarOptions) -> UIToolbar {
-        let toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.backgroundColor = UIColor(hex: options.backgroundColor)
-        view.addSubview(toolbar)
-        
-        // Add close button
+   
+    @objc public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == #keyPath(WKWebView.url), let newURL = change?[.newKey] as? URL {
+            self._pluginEvents.notifyUrlChanged(newURL)
+        }
+    }
+    
+    deinit {
+        self._webView?.removeObserver(self, forKeyPath: #keyPath(WKWebView.url))
+    }
+    
+    
+    @objc private func createCloseButton(_ toolbarOptions: WebViewToolbarOptions) -> UIButton {
         let closeButton = UIButton(type: .system)
         closeButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         //closeButton.setTitle("Done", for: .normal)
         closeButton.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
-        closeButton.setTitleColor(UIColor(hex: options.color), for: .normal)
-        
-        
+        closeButton.setTitleColor(UIColor(hex: toolbarOptions.color), for: .normal)
         let buttonSize: CGFloat = 24 // Set the desired size of the button
         closeButton.frame = CGRect(x: 0, y: 0, width: buttonSize, height: buttonSize)
-        
-        toolbar.addSubview(closeButton)
-        
-        // Add title label
+        return closeButton
+    }
+    
+    @objc private func createTitleLable(_ toolbarOptions: WebViewToolbarOptions) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.text = title
         titleLabel.textAlignment = .center
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.textColor = UIColor(hex: options.color)
+        titleLabel.textColor = UIColor(hex: toolbarOptions.color)
+        return titleLabel
+    }
+    
+    @objc private func setupToolbar() -> UIToolbar? {
+        
+        guard  let toolbarOptions = self._options.toolbar else {
+            return nil
+        }
+        
+        let toolbar = UIToolbar()
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        toolbar.backgroundColor = UIColor(hex: toolbarOptions.backgroundColor)
+        view.addSubview(toolbar)
+        
+        let closeButton = createCloseButton(toolbarOptions)
+        toolbar.addSubview(closeButton)
+        
+        let titleLabel = createTitleLable(toolbarOptions)
         toolbar.addSubview(titleLabel)
       
   
@@ -141,20 +121,53 @@ public class WebViewController: UIViewController {
             titleLabel.centerYAnchor.constraint(equalTo: toolbar.centerYAnchor),
         ])
         
-        return toolbar;
-    }
-   
-   
-    @objc public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        if keyPath == #keyPath(WKWebView.url), let newURL = change?[.newKey] as? URL {
-            self._pluginEvents.notifyUrlChanged(newURL)
-           
-        }
+        return toolbar
+        
     }
     
-    deinit {
-          // Remove observer to avoid memory leaks
-        self._webView?.removeObserver(self, forKeyPath: #keyPath(WKWebView.url))
+    @objc private func setupSpinner() -> UIActivityIndicatorView {
+        let spinnerView = UIActivityIndicatorView(style: .medium)
+        spinnerView.hidesWhenStopped = true
+        spinnerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(spinnerView)
+        spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        return spinnerView
+    }
+    
+    @objc private func setupWebView(toolbar: UIToolbar?) -> WKWebView? {
+        
+        guard let url = URL(string: self._options.url) else {
+            return nil
+        }
+                
+        let webView = WKWebView(frame: UIScreen.main.bounds);
+        view.addSubview(webView)
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        if let toolbar = toolbar {
+            NSLayoutConstraint.activate([
+                webView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
+                webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                webView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            ])
+        } else {
+            let guide = view.safeAreaLayoutGuide
+            NSLayoutConstraint.activate([
+                webView.topAnchor.constraint(equalTo: guide.topAnchor),
+                webView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                webView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                webView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            ])
+            
+        }
+        
+        webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: .new, context: nil)
+        webView.isHidden = true
+        webView.navigationDelegate = self
+        webView.load(URLRequest(url: url))
+        return webView
     }
 }
 

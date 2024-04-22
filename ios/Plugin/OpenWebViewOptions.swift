@@ -18,28 +18,28 @@ import Capacitor
     
     private func getStringProp(_ propName: String) -> String {
         guard let propValue = _jsObject[propName] as? String else {
-            return "";
+            return ""
         }
-        return propValue;
+        return propValue
     }
     
     
     var title: String {
         get {
-            return getStringProp("title");
+            return getStringProp("title")
             
         }
     }
     
     var backgroundColor: String {
         get {
-            return getStringProp("backgroundColor");
+            return getStringProp("backgroundColor")
         }
     }
     
     var color: String {
         get {
-            return getStringProp("color");
+            return getStringProp("color")
         }
     }
     
@@ -47,23 +47,23 @@ import Capacitor
 
 @objc public class OpenWebViewOptions: NSObject {
     public init(_ pluginCall: CAPPluginCall) {
-        self._pluginCall = pluginCall;
+        self._pluginCall = pluginCall
     }
     
     private let _pluginCall: CAPPluginCall;
     
     var url: String {
         get {
-            return _pluginCall.getString("url", "");
+            return _pluginCall.getString("url", "")
         }
     }
     
     var toolbar: WebViewToolbarOptions? {
         get {
             if let jsOptions = _pluginCall.getObject("toolbar") {
-                return WebViewToolbarOptions(jsOptions);
+                return WebViewToolbarOptions(jsOptions)
             } else {
-                return nil;
+                return nil
             }
                 
         }

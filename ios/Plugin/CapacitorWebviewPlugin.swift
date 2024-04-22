@@ -13,19 +13,19 @@ import Capacitor
 @objc(CapacitorWebviewPlugin)
 public class CapacitorWebviewPlugin: CAPPlugin {
     
-    private var _webViewController: WebViewController? = nil;
+    private var _webViewController: WebViewController? = nil
     
     @objc func openWebView(_ call: CAPPluginCall) {
-        let options = OpenWebViewOptions(call);
+        let options = OpenWebViewOptions(call)
         
         DispatchQueue.main.async {
             if let viewCtrl = self.bridge?.viewController {
-                let webViewController = WebViewController(options: options, parentViewController: viewCtrl, pluginEvents: self);
-                viewCtrl.present(webViewController, animated: true, completion: nil);
-                self._webViewController = webViewController;
+                let webViewController = WebViewController(options: options, parentViewController: viewCtrl, pluginEvents: self)
+                viewCtrl.present(webViewController, animated: true, completion: nil)
+                self._webViewController = webViewController
                 
             } else {
-                call.reject("self.bridge?.viewController is null");
+                call.reject("self.bridge?.viewController is null")
             }
         }
         
@@ -35,10 +35,9 @@ public class CapacitorWebviewPlugin: CAPPlugin {
         
         DispatchQueue.main.async {
             if let webViewCtrl = self._webViewController {
-                webViewCtrl.dismiss(animated: true)
+                webViewCtrl.dismiss(animated: false)
             }
         }
-        
         
     }
     
