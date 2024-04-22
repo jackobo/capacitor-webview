@@ -111,13 +111,13 @@ public class WebViewActivity extends AppCompatActivity {
         var backgroundColor = Color.parseColor(options.getBackgroundColor());
         actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
 
-
         var htmlTitle = String.format("<font color='%s'>%s</font>", options.getColor(), options.getTitle());
         actionBar.setTitle(Html.fromHtml(htmlTitle));
+        
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
-        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_webview_back_arrow);
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_webview_x_close);
         if(drawable != null) {
             drawable.setColorFilter(Color.parseColor(options.getColor()), PorterDuff.Mode.SRC_ATOP);
             actionBar.setHomeAsUpIndicator(drawable);
