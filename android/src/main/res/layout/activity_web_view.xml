@@ -6,10 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".WebViewActivity">
+
     <WebView
         android:id="@+id/pluginWebView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp"
+        android:visibility="gone">
+    </WebView>
+
+
+    <ProgressBar
+        android:id="@+id/webViewSpinner"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/webViewActivity"
+        app:layout_constraintEnd_toEndOf="@id/webViewActivity"
+        app:layout_constraintStart_toStartOf="@id/webViewActivity"
+        app:layout_constraintTop_toTopOf="@+id/pluginWebView" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
