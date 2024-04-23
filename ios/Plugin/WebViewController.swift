@@ -157,6 +157,14 @@ public class WebViewController: UIViewController {
         if let userAgent = self._options.userAgent {
             webView.configuration.applicationNameForUserAgent = userAgent
         }
+        
+        if self._options.allowDebug {
+            if webView.responds(to: Selector(("setInspectable:"))) {
+                // Fix: https://stackoverflow.com/questions/76216183/how-to-debug-wkwebview-in-ios-16-4-1-using-xcode-14-2/76603043#76603043
+                webView.perform(Selector(("setInspectable:")), with: true)
+            }
+        }
+        
                 
         
         view.addSubview(webView)

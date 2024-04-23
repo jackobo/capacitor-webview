@@ -69,6 +69,12 @@ import Capacitor
         }
     }
     
+    var allowDebug: Bool {
+        get {
+            return self._pluginCall.getBool("allowDebug", false)
+        }
+    }
+    
     @objc private func jsHeadersToDictionary() -> [String: String] {
         guard let jsHeaders = _pluginCall.getObject("headers") else {
             return [:];
