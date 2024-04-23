@@ -1,7 +1,6 @@
 package com.jackobo.capacitor.plugins.webview;
 
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,8 +23,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -34,6 +31,7 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -120,24 +118,33 @@ public class WebViewActivity extends AppCompatActivity {
             return;
         }
 
-        var backgroundColor = Color.parseColor(options.getBackgroundColor());
-        actionBar.setBackgroundDrawable(new ColorDrawable(backgroundColor));
         actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowHomeEnabled(false);
+
+        var backgroundColor = new ColorDrawable(Color.parseColor(options.getBackgroundColor()));
+        actionBar.setBackgroundDrawable(backgroundColor);
 
         actionBar.setCustomView(R.layout.webview_actionbar_content);
         actionBar.setDisplayShowCustomEnabled(true);
 
-        TextView titleTextView = findViewById(R.id.webviewActionBarTitle);
+        TextView titleTextView = findViewById(R.id.webviewTitleText);
         titleTextView.setText(options.getTitle());
         titleTextView.setTextColor(Color.parseColor(options.getColor()));
 
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        Button closeButton = findViewById(R.id.webViewBackButton);
+        closeButton.setBackground(backgroundColor);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         Drawable drawable = ContextCompat.getDrawable(this, R.drawable.ic_webview_x_close);
         if(drawable != null) {
             drawable.setColorFilter(Color.parseColor(options.getColor()), PorterDuff.Mode.SRC_ATOP);
-            actionBar.setHomeAsUpIndicator(drawable);
+            closeButton.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         }
     }
 
@@ -201,12 +208,4 @@ public class WebViewActivity extends AppCompatActivity {
         return webView;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home) {
-            getOnBackPressedDispatcher().onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

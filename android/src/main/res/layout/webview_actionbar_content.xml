@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:paddingEnd="50dp">
+
+    <Button
+        android:id="@+id/webViewBackButton"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:drawableStart="@drawable/ic_webview_x_close" />
 
     <TextView
-        android:id="@+id/webviewActionBarTitle"
-        android:layout_width="match_parent"
+        android:id="@+id/webviewTitleText"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:gravity="center"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
+
 
 </LinearLayout>
