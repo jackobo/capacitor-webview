@@ -74,6 +74,9 @@ public class OpenWebViewOptions {
         return _headers;
     }
 
+    public Boolean getIgnoreSslErrors() {
+        return _pluginCall.getBoolean("ignoreSslErrors", false);
+    }
 
     public void resolvePluginCall(String url) {
         JSObject ret = new JSObject();

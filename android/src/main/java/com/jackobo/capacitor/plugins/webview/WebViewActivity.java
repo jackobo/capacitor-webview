@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -74,7 +77,11 @@ public class WebViewActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         var intentFilter = new IntentFilter(CLOSE_WEB_VIEW_INTENT);
-        registerReceiver(_broadcastReceiver, intentFilter);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(_broadcastReceiver, intentFilter, Context.RECEIVER_EXPORTED);
+        } else {
+            registerReceiver(_broadcastReceiver, intentFilter);
+        }
     }
 
     @Override
@@ -169,6 +176,17 @@ public class WebViewActivity extends AppCompatActivity {
                     options.getEvents().onUrlChanged(url);
                 }
             }
+
+
+            @Override
+            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                if(options.getIgnoreSslErrors()) {
+                    handler.proceed();
+                } else {
+                    super.onReceivedSslError(view, handler, error);
+                }
+            }
+
         });
         webView.setWebChromeClient(new WebChromeClient());
 

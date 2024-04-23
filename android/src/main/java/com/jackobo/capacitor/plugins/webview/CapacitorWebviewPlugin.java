@@ -37,6 +37,7 @@ public class CapacitorWebviewPlugin extends Plugin {
     public void closeWebView(PluginCall call) {
         Intent intent = new Intent(WebViewActivity.CLOSE_WEB_VIEW_INTENT);
         getContext().sendBroadcast(intent);
+        call.resolve();
     }
 
 }

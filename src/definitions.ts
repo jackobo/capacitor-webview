@@ -46,6 +46,14 @@ export interface IOpenWebViewOptions {
    */
   toolbar?: IWebViewToolbarOptions;
 
+  /**
+   * When set to true will disable the SSL errors (Android only)
+   * It should be used only for testing purpose in test environments if you encounter certificates issues
+   * @default false
+   *
+   * @since 1.0.0
+   */
+  ignoreSslErrors?: boolean;
 }
 
 /**
