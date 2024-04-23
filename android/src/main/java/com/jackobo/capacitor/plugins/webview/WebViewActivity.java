@@ -180,7 +180,7 @@ public class WebViewActivity extends AppCompatActivity {
 
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                if(options.getIgnoreSslErrors()) {
+                if(options.getIgnoreSslErrors() && error.getPrimaryError() == SslError.SSL_UNTRUSTED) {
                     handler.proceed();
                 } else {
                     super.onReceivedSslError(view, handler, error);
