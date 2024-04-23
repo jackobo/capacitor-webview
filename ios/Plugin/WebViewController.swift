@@ -162,7 +162,6 @@ public class WebViewController: UIViewController {
             webView.configuration.preferences.setValue(true, forKey: "developerExtrasEnabled")
             
             if webView.responds(to: Selector(("setInspectable:"))) {
-                // Fix: https://stackoverflow.com/questions/76216183/how-to-debug-wkwebview-in-ios-16-4-1-using-xcode-14-2/76603043#76603043
                 webView.perform(Selector(("setInspectable:")), with: true)
             }
         }
