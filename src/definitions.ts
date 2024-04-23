@@ -49,6 +49,7 @@ export interface IOpenWebViewOptions {
   /**
    * When set to true will disable the SSL errors (Android only)
    * It should be used only for testing purpose in test environments if you encounter certificates issues
+   * Only SSL_UNTRUSTED errors are ignored when this property is set to true
    * @default false
    *
    * @since 1.0.0
