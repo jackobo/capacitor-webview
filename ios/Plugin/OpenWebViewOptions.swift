@@ -69,6 +69,54 @@ import Capacitor
         }
     }
     
+    @objc private func jsHeadersToDictionary() -> [String: String] {
+        guard let jsHeaders = _pluginCall.getObject("headers") else {
+            return [:];
+        }
+        
+        var headers: [String: String] = [:]
+        
+        for (key, value) in jsHeaders {
+            if let val = value as? String {
+                headers[key] = val
+            }
+        }
+        
+        return headers;
+    }
+    
+    private let USER_AGENT_HEADER_NAME = "user-agent"
+    
+    var userAgent: String? {
+        get {
+            
+            for (key, value) in self.jsHeadersToDictionary() {
+                if(key.lowercased() == USER_AGENT_HEADER_NAME) {
+                    return value;
+                }
+            }
+            
+            return nil
+        }
+    }
+    
+    var headers: [String: String] {
+        get {
+            
+            var result: [String: String] = [:]
+            
+            for (key, value) in self.jsHeadersToDictionary() {
+                if(key.lowercased() != USER_AGENT_HEADER_NAME) {
+                    result[key] = value
+                }
+            }
+            
+            return result;
+        }
+    }
+   
+   
+    
     @objc func resolveCall(_ url: URL?) {
         
         self._pluginCall.resolve([
@@ -76,5 +124,9 @@ import Capacitor
         ])
         
     }
+    
+    
+    
+    
 }
 

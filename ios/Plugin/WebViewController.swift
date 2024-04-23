@@ -153,6 +153,12 @@ public class WebViewController: UIViewController {
         }
                 
         let webView = WKWebView(frame: UIScreen.main.bounds);
+        
+        if let userAgent = self._options.userAgent {
+            webView.configuration.applicationNameForUserAgent = userAgent
+        }
+                
+        
         view.addSubview(webView)
         webView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -174,10 +180,20 @@ public class WebViewController: UIViewController {
             
         }
         
+        
+        
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: .new, context: nil)
         webView.isHidden = true
         webView.navigationDelegate = self
-        webView.load(URLRequest(url: url))
+        var request = URLRequest(url: url)
+        
+        for (key, value) in self._options.headers {
+            request.setValue(value, forHTTPHeaderField: key)
+        }
+        
+        
+        
+        webView.load(request)
         return webView
     }
 }
