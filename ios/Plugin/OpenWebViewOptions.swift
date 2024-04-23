@@ -69,9 +69,9 @@ import Capacitor
         }
     }
     
-    var allowDebug: Bool {
+    var enableDebug: Bool {
         get {
-            return self._pluginCall.getBool("allowDebug", false)
+            return self._pluginCall.getBool("enableDebug", false)
         }
     }
     

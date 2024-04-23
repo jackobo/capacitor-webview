@@ -131,12 +131,12 @@ The result of the openWebView method
 
 #### IOpenWebViewOptions
 
-| Prop             | Type                                                                      | Description                                                                                                     | Default            | Since |
-| ---------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
-| **`url`**        | <code>string</code>                                                       | URL to load in the Webview                                                                                      |                    | 1.0.0 |
-| **`headers`**    | <code><a href="#record">Record</a>&lt;string, string&gt;</code>           | Headers to be appended to the initial request. These are not used for subsequent navigation inside the WebView. |                    | 1.0.0 |
-| **`allowDebug`** | <code>boolean</code>                                                      | Whether to enable debug on the webview (iOS only)                                                               | <code>false</code> | 1.0.0 |
-| **`toolbar`**    | <code><a href="#iwebviewtoolbaroptions">IWebViewToolbarOptions</a></code> | Specify toolbar options. If null or undefined the toolbar will not be shown                                     |                    | 1.0.0 |
+| Prop              | Type                                                                      | Description                                                                                                     | Default            | Since |
+| ----------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------ | ----- |
+| **`url`**         | <code>string</code>                                                       | URL to load in the Webview                                                                                      |                    | 1.0.0 |
+| **`headers`**     | <code><a href="#record">Record</a>&lt;string, string&gt;</code>           | Headers to be appended to the initial request. These are not used for subsequent navigation inside the WebView. |                    | 1.0.0 |
+| **`enableDebug`** | <code>boolean</code>                                                      | Whether to enable debug on the webview (iOS only)                                                               | <code>false</code> | 1.0.0 |
+| **`toolbar`**     | <code><a href="#iwebviewtoolbaroptions">IWebViewToolbarOptions</a></code> | Specify toolbar options. If null or undefined the toolbar will not be shown                                     |                    | 1.0.0 |
 
 
 #### IWebViewToolbarOptions

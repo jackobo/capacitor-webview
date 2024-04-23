@@ -38,7 +38,7 @@ export interface IOpenWebViewOptions {
    * @since 1.0.0
    * @default false
    */
-  allowDebug?: boolean;
+  enableDebug?: boolean;
 
   /**
    * Specify toolbar options. If null or undefined the toolbar will not be shown
