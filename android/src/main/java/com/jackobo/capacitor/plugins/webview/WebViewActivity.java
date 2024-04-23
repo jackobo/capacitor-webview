@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -23,7 +22,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.text.TextUtils;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -132,8 +130,7 @@ public class WebViewActivity extends AppCompatActivity {
         titleTextView.setText(options.getTitle());
         titleTextView.setTextColor(Color.parseColor(options.getColor()));
 
-        Button closeButton = findViewById(R.id.webViewBackButton);
-        closeButton.setBackground(backgroundColor);
+        Button closeButton = findViewById(R.id.webViewCloseXButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
