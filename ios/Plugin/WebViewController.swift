@@ -34,7 +34,7 @@ public class WebViewController: UIViewController {
         self._webView = setupWebView(toolbar: toolbar)
         
         modalPresentationStyle = .fullScreen
-        view.backgroundColor = .clear
+        view.backgroundColor = .white
         
         view.frame = parentViewController.view.bounds
         
@@ -143,6 +143,8 @@ public class WebViewController: UIViewController {
         view.addSubview(spinnerView)
         spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        spinnerView.transform = CGAffineTransform(scaleX: 2.5, y: 2.5)
+        spinnerView.startAnimating()
         return spinnerView
     }
     
@@ -153,6 +155,7 @@ public class WebViewController: UIViewController {
         }
                 
         let webView = WKWebView(frame: UIScreen.main.bounds);
+        webView.isHidden = true
         
         if let userAgent = self._options.userAgent {
             webView.configuration.applicationNameForUserAgent = userAgent
@@ -169,6 +172,7 @@ public class WebViewController: UIViewController {
                 
         
         view.addSubview(webView)
+        
         webView.translatesAutoresizingMaskIntoConstraints = false
         
         if let toolbar = toolbar {
@@ -192,7 +196,7 @@ public class WebViewController: UIViewController {
         
         
         webView.addObserver(self, forKeyPath: #keyPath(WKWebView.url), options: .new, context: nil)
-        webView.isHidden = true
+        
         webView.navigationDelegate = self
         var request = URLRequest(url: url)
         
@@ -228,6 +232,7 @@ extension UIColor {
 
 extension WebViewController: WKNavigationDelegate {
     
+    /*
     @objc public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
      
         if(self._isInitialPageLoad) {
@@ -237,6 +242,7 @@ extension WebViewController: WKNavigationDelegate {
         }
       
     }
+     */
     
     @objc public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
