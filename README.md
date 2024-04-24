@@ -1,6 +1,9 @@
 # @jackobo/capacitor-webview
 
-Capacitor plugin for Webview
+Capacitor plugin for Android and iOS WebView,  
+It opens an URL in a WebView.  
+It doesn't provide navigation support in the WebView. No back and forward buttons just a close button and a title in a toolbar.  
+You can control the toolbar background and text color.    
 
 ## Install
 

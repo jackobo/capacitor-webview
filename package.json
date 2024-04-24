@@ -1,7 +1,7 @@
 {
   "name": "@jackobo/capacitor-webview",
   "version": "1.0.0",
-  "description": "Capacitor plugin for Webview",
+  "description": "Capacitor plugin for Webview.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -41,7 +41,8 @@
     "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
     "clean": "rimraf ./dist",
     "watch": "tsc --watch",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "deploy": "npm publish --access public"
   },
   "devDependencies": {
     "@capacitor/android": "^6.0.0",
