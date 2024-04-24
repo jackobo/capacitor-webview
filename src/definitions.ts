@@ -13,7 +13,7 @@ export interface IWebViewToolbarOptions {
   backgroundColor: string;
 
   /**
-   * The color for the title and for the back arrow in hex format
+   * The color for the title text and for the X close button in hex format
    * @since 1.0.0
    */
   color: string;
