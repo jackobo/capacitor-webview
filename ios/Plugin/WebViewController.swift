@@ -137,9 +137,10 @@ public class WebViewController: UIViewController {
     }
     
     @objc private func setupSpinner() -> UIActivityIndicatorView {
-        let spinnerView = UIActivityIndicatorView(style: .medium)
+        let spinnerView = UIActivityIndicatorView(style: .large)
         spinnerView.hidesWhenStopped = true
         spinnerView.translatesAutoresizingMaskIntoConstraints = false
+        spinnerView.color = .black
         view.addSubview(spinnerView)
         spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
