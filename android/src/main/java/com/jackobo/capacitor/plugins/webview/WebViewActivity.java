@@ -161,6 +161,9 @@ public class WebViewActivity extends AppCompatActivity {
         webViewSettings.setLoadWithOverviewMode(true);
         webViewSettings.setUseWideViewPort(true);
 
+        webViewSettings.setBuiltInZoomControls(true);
+        webViewSettings.setDisplayZoomControls(false);
+
         webViewSettings.setAllowFileAccessFromFileURLs(true);
         webViewSettings.setAllowUniversalAccessFromFileURLs(true);
         if(!TextUtils.isEmpty(options.getUserAgent())) {
