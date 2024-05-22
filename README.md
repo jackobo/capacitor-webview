@@ -145,11 +145,11 @@ The result of the openWebView method
 
 #### IWebViewToolbarOptions
 
-| Prop                  | Type                | Description                                                  | Since |
-| --------------------- | ------------------- | ------------------------------------------------------------ | ----- |
-| **`title`**           | <code>string</code> | The text to appear in the toolbar                            | 1.0.0 |
-| **`backgroundColor`** | <code>string</code> | Background color of the toolbar in hex format                | 1.0.0 |
-| **`color`**           | <code>string</code> | The color for the title and for the back arrow in hex format | 1.0.0 |
+| Prop                  | Type                | Description                                                           | Since |
+| --------------------- | ------------------- | --------------------------------------------------------------------- | ----- |
+| **`title`**           | <code>string</code> | The text to appear in the toolbar                                     | 1.0.0 |
+| **`backgroundColor`** | <code>string</code> | Background color of the toolbar in hex format                         | 1.0.0 |
+| **`color`**           | <code>string</code> | The color for the title text and for the X close button in hex format | 1.0.0 |
 
 
 #### PluginListenerHandle
