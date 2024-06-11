@@ -170,7 +170,9 @@ public class WebViewController: UIViewController {
             }
         }
         
-                
+        if #available(iOS 14.0, *) {
+            webView.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
+        }
         
         view.addSubview(webView)
         
