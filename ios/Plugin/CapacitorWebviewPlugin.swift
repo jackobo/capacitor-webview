@@ -49,6 +49,7 @@ extension CapacitorWebviewPlugin: CapacitorWebViewPluginEvents {
     }
     
     public func notifyClosed(_ url: URL?) {
+        self._webViewController = nil
         notifyListeners("webViewClosed", data: ["url" : url?.absoluteString ?? ""])
     }
     
