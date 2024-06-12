@@ -315,6 +315,13 @@ extension WebViewController: WKNavigationDelegate {
 
     }
 
+    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+
+        if navigationAction.targetFrame == nil, let url = navigationAction.request.url {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        return nil
+    }
 
 
 }
