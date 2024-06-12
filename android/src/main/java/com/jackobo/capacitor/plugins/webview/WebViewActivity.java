@@ -205,25 +205,36 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             }
 
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
 
-                if(request.isRedirect()) {
+                try {
+                    var requestedUrl = request.getUrl().toString().toLowerCase();
+                    Log.i("shouldOverrideUrlLoading", requestedUrl);
+                    if(request.isRedirect()) {
+                        return false;
+                    }
+
+                    var urlsToOpenInExternalBrowser = WebViewOptions.getUrlPatternsToOpenInExternalBrowser();
+
+                    for(var i = 0; i < urlsToOpenInExternalBrowser.length; i++) {
+                        if(requestedUrl.contains(urlsToOpenInExternalBrowser[i])) {
+                            Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+                            view.getContext().startActivity(intent);
+                            return true;
+                        }
+                    }
+
+                    return false;
+                } catch (Exception ex) {
+                    Log.e("shouldOverrideUrlLoading", ex.toString());
                     return false;
                 }
 
-                var urlsToOpenInExternalBrowser = WebViewOptions.getUrlPatternsToOpenInExternalBrowser();
-                var requestedUrl = request.getUrl().toString().toLowerCase();
-                for(var i = 0; i < urlsToOpenInExternalBrowser.length; i++) {
-                    if(requestedUrl.contains(urlsToOpenInExternalBrowser[i])) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-                        view.getContext().startActivity(intent);
-                        return true;
-                    }
-                }
-
-                return false;
             }
+
+
         });
         webView.setWebChromeClient(new WebChromeClient());
 
