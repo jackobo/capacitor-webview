@@ -1,6 +1,6 @@
 {
   "name": "@jackobo/capacitor-webview",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Capacitor plugin for Webview.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",

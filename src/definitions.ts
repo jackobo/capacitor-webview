@@ -55,6 +55,14 @@ export interface IOpenWebViewOptions {
    * @since 1.0.0
    */
   ignoreSslErrors?: boolean;
+
+  /**
+   * An array of partial matching URLs that will be open in the system browser when an open in new tab request happens inside the webview. (Android only)
+   * This property is ignored when navigation is a server side redirect.
+   * Example:
+   * urlPatternsToOpenInExternalBrowser: ['/cookies-policy', '/privacy-notice'] // Any URL navigation with open in new tab that contains any of these segments will be open in the device default browser
+   */
+  urlPatternsToOpenInExternalBrowser?: string[];
 }
 
 /**

@@ -22,12 +22,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -205,10 +207,19 @@ public class WebViewActivity extends AppCompatActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                if(!request.isRedirect()) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
-                    view.getContext().startActivity(intent);
-                    return true;
+
+                if(request.isRedirect()) {
+                    return false;
+                }
+
+                var urlsToOpenInExternalBrowser = WebViewOptions.getUrlPatternsToOpenInExternalBrowser();
+                var requestedUrl = request.getUrl().toString().toLowerCase();
+                for(var i = 0; i < urlsToOpenInExternalBrowser.length; i++) {
+                    if(requestedUrl.contains(urlsToOpenInExternalBrowser[i])) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+                        view.getContext().startActivity(intent);
+                        return true;
+                    }
                 }
 
                 return false;

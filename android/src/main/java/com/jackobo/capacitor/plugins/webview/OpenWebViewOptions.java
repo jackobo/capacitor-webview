@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
+
 public class OpenWebViewOptions {
     OpenWebViewOptions(PluginCall call, IWebViewEvents events) {
         this._pluginCall = call;
@@ -27,6 +28,34 @@ public class OpenWebViewOptions {
     public String getUrl() {
         return _pluginCall.getString("url");
     }
+
+    public String[] getUrlPatternsToOpenInExternalBrowser() {
+
+
+        var jsArray = _pluginCall.getArray("urlPatternsToOpenInExternalBrowser");
+
+        if(jsArray == null) {
+            return new String[0];
+        }
+
+        var count = jsArray.length();
+        var result = new String[count];
+
+        for (int i = 0; i < count; i++) {
+            result[i] = jsArray.optString(i).toLowerCase();
+        }
+
+        /*
+        /cookies-policy
+        /privacy-notice
+        /terms-portal
+        /privacy
+        /terms
+        */
+
+        return  result;
+    }
+
 
     @Nullable
     public WebViewToolbarOptions getToolbarOptions() {
