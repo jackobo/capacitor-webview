@@ -202,6 +202,16 @@ public class WebViewActivity extends AppCompatActivity {
                 }
             }
 
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                if(!request.isRedirect()) {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, request.getUrl());
+                    view.getContext().startActivity(intent);
+                    return true;
+                }
+
+                return false;
+            }
         });
         webView.setWebChromeClient(new WebChromeClient());
 

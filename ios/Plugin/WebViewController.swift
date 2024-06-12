@@ -94,7 +94,7 @@ public class WebViewController: UIViewController, WKUIDelegate {
         return closeButton
     }
 
-    @objc private func createTitleLable(_ toolbarOptions: WebViewToolbarOptions) -> UILabel {
+    @objc private func createTitleLabel(_ toolbarOptions: WebViewToolbarOptions) -> UILabel {
         let titleLabel = UILabel()
         titleLabel.text = toolbarOptions.title
         titleLabel.textAlignment = .center
@@ -120,7 +120,7 @@ public class WebViewController: UIViewController, WKUIDelegate {
         let closeButton = UIBarButtonItem(customView: createCloseButton(toolbarOptions))
         //toolbar.addSubview(closeButton)
 
-        let titleLabel = UIBarButtonItem(customView: createTitleLable(toolbarOptions))
+        let titleLabel = UIBarButtonItem(customView: createTitleLabel(toolbarOptions))
         //toolbar.addSubview(titleLabel)
 
         toolbar.setItems([closeButton, flexibleSpaceLeft, titleLabel, flexibleSpaceRight], animated: true)
