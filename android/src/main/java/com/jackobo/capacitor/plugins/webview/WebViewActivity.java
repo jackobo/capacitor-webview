@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -55,6 +56,12 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        var options = WebViewOptions;
+
+        var screenOrientation = options.getScreenOrientation();
+        if(screenOrientation != null) {
+            setRequestedOrientation(screenOrientation);
+        }
 
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_web_view);
@@ -67,7 +74,7 @@ public class WebViewActivity extends AppCompatActivity {
             return insets;
         });
 
-        var options = WebViewOptions;
+
         setupActionBar(options.getToolbarOptions());
 
         var webView = setupWebView(options);

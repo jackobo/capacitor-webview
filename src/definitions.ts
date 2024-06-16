@@ -61,8 +61,16 @@ export interface IOpenWebViewOptions {
    * This property is ignored when navigation is a server side redirect.
    * Example:
    * urlPatternsToOpenInExternalBrowser: ['/cookies-policy', '/privacy-notice'] // Any URL navigation with open in new tab that contains any of these segments will be open in the device default browser
+   * @since 1.0.7
    */
   urlPatternsToOpenInExternalBrowser?: string[];
+
+  /**
+   * Enforce a specific screen orientation for the activity that contains the webview (Android only)
+   * If not specified it will allow both portrait and landscape screen orientations
+   * @since 1.0.9
+   */
+  screenOrientation?: 'portrait' | 'landscape'
 }
 
 /**

@@ -1,5 +1,7 @@
 package com.jackobo.capacitor.plugins.webview;
 
+import android.content.pm.ActivityInfo;
+
 import androidx.annotation.Nullable;
 
 import com.getcapacitor.JSObject;
@@ -27,6 +29,20 @@ public class OpenWebViewOptions {
 
     public String getUrl() {
         return _pluginCall.getString("url");
+    }
+
+    public Integer getScreenOrientation() {
+        var screenOrientation = _pluginCall.getString("screenOrientation");
+        if(screenOrientation == null) {
+            return null;
+        }
+
+        return switch (screenOrientation) {
+            case "portrait" -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+            case "landscape" -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+            default -> null;
+        };
+
     }
 
     public String[] getUrlPatternsToOpenInExternalBrowser() {
